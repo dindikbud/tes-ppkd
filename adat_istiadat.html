@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1A1A1A" />
+  <meta name="description" content="Data Adat Istiadat - Rencana Strategis Bidang Kebudayaan Provinsi Banten" />
+  <title>Adat Istiadat · Budaya Banten</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    /* ================================================================
+       ROOT & GLOBAL (sama seperti sebelumnya)
+       ================================================================ */
+    :root {
+      --cream: #1A1A1A;
+      --cream2: #242424;
+      --cream3: #2E2E2E;
+      --white: #1E1E1E;
+      --brown-deep: #E8DDD0;
+      --brown-soft: #D4C5B5;
+      --brown-mid: #B8A99A;
+      --gold: #B8893A;
+      --gold-light: #D4A853;
+      --gold-pale: #E8D5B5;
+      --slate: #D0D0D0;
+      --slate-soft: #A0A0A0;
+      --slate-light: #707070;
+      --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.4);
+      --shadow-medium: 0 8px 40px rgba(0, 0, 0, 0.5);
+      --shadow-gold: 0 8px 32px rgba(184, 137, 58, 0.25);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition-base: 0.3s ease;
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.5rem;
+      --space-6: 2rem;
+      --space-7: 3rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      background-image: url('sunset.jpeg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      color: var(--brown-deep);
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    .body-overlay {
+      background: rgba(26, 26, 26, 0.40);
+      backdrop-filter: blur(1px);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--cream2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold);
+      border-radius: 10px;
+    }
+
+    /* Loader */
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      gap: 20px;
+    }
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loader-logo {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .loader-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--cream3);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      animation: loaderFill 1.8s ease forwards;
+    }
+    @keyframes loaderFill {
+      100% { width: 100%; }
+    }
+
+    /* ========== NAVBAR ========== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 0;
+      transition: all var(--transition);
+      background: transparent;
+    }
+
+    .navbar.scrolled {
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      padding: 10px 0;
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+      transition: color var(--transition);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+    .navbar.scrolled .navbar-brand {
+      color: #fff;
+      text-shadow: none;
+    }
+
+    .navbar-brand .brand-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      box-shadow: var(--shadow-gold);
+    }
+
+    .navbar-brand .brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .navbar-brand .brand-text span {
+      display: block;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 0.6rem;
+      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .navbar.scrolled .navbar-brand .brand-text span {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .navbar-links>li>a {
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #ffffff;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    .navbar-links>li>a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--gold-light);
+    }
+    .navbar.scrolled .navbar-links>li>a {
+      color: #fff;
+      text-shadow: none;
+    }
+    .navbar.scrolled .navbar-links>li>a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+
+    .navbar-links>li>a.buku-link {
+      background: rgba(184, 137, 58, 0.25);
+      border: 1px solid rgba(184, 137, 58, 0.3);
+      color: #fff;
+    }
+    .navbar-links>li>a.buku-link:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(184, 137, 58, 0.3);
+    }
+    .navbar.scrolled .navbar-links>li>a.buku-link {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .navbar.scrolled .navbar-links>li>a.buku-link:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    /* Dropdown Sarana */
+    .has-drop {
+      position: relative;
+    }
+    .has-drop .navbar-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 220px;
+      background: rgba(13, 13, 13, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-medium);
+      padding: 6px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.25s ease;
+      list-style: none;
+      border: 1px solid rgba(184, 137, 58, 0.1);
+    }
+    .has-drop.open .navbar-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .has-drop .navbar-dropdown li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.15s ease;
+    }
+    .has-drop .navbar-dropdown li a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+    .has-drop .navbar-dropdown li a.active {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+
+    /* Actions */
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-more {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: var(--font-sans);
+      backdrop-filter: blur(4px);
+    }
+    .btn-more:hover {
+      background: rgba(184, 137, 58, 0.2);
+      border-color: var(--gold);
+    }
+    .navbar.scrolled .btn-more {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-more {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-more-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: rgba(13, 13, 13, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(184, 137, 58, 0.1);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-medium);
+      min-width: 200px;
+      padding: 6px;
+      z-index: 999;
+    }
+    .dropdown-more-content.open {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+    .dropdown-more-content a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.15s ease;
+    }
+    .dropdown-more-content a i {
+      color: var(--gold-light);
+      width: 18px;
+      text-align: center;
+    }
+    .dropdown-more-content a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2.5px;
+      background: #fff;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+    .navbar.scrolled .hamburger span {
+      background: #fff;
+    }
+
+    /* Drawer */
+    .navbar-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      height: 100vh;
+      background: rgba(13, 13, 13, 0.97);
+      backdrop-filter: blur(16px);
+      padding: 80px 24px 30px;
+      overflow-y: auto;
+      transition: right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 999;
+      list-style: none;
+    }
+    .navbar-drawer.open {
+      right: 0;
+    }
+    .navbar-drawer ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .navbar-drawer .drawer-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 700;
+      padding: 12px 0 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .navbar-drawer a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.15s ease;
+    }
+    .navbar-drawer a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+    .navbar-drawer a i {
+      width: 20px;
+      color: var(--gold-light);
+    }
+    .navbar-drawer a.active {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+
+    /* ========== PAGE HEADER ========== */
+    .page-header-custom {
+      padding: 9rem 0 3rem;
+      background: linear-gradient(135deg, rgba(44, 26, 14, 0.7) 0%, rgba(30, 58, 47, 0.7) 100%);
+      backdrop-filter: blur(4px);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(184, 137, 58, 0.1);
+    }
+
+    .page-header-custom .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 24px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-brand-icon.large {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid rgba(184, 137, 58, 0.3);
+      box-shadow: 0 0 0 8px rgba(184, 137, 58, 0.08);
+    }
+
+    .header-brand-icon.large img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .header-brand-text h2 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .header-brand-text > span {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.3px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .header-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.5);
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .header-breadcrumb a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .header-breadcrumb a:hover {
+      color: var(--gold-light);
+    }
+
+    .header-breadcrumb .separator {
+      color: rgba(255, 255, 255, 0.2);
+      font-size: 0.7rem;
+    }
+
+    .header-breadcrumb .current {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .page-header-custom h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .page-header-custom h1 .highlight {
+      color: #D4A853;
+    }
+
+    .page-header-custom p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin-top: 0.8rem;
+      line-height: 1.7;
+    }
+
+    /* ========== RESPONSIVE HEADER ========== */
+    @media (max-width: 768px) {
+      .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+      }
+      .header-brand {
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+      .header-brand-icon.large {
+        width: 90px;
+        height: 90px;
+      }
+      .header-brand-text h2 {
+        font-size: 1.3rem;
+      }
+      .header-brand-text > span {
+        font-size: 0.75rem;
+      }
+      .header-breadcrumb {
+        font-size: 0.75rem;
+        margin-top: 4px;
+      }
+      .page-header-custom p {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-brand-icon.large {
+        width: 70px;
+        height: 70px;
+      }
+      .header-brand-text h2 {
+        font-size: 1.1rem;
+      }
+      .header-brand-text > span {
+        font-size: 0.7rem;
+      }
+      .header-breadcrumb {
+        font-size: 0.65rem;
+        gap: 5px;
+      }
+    }
+
+    /* ========== SECTION ========== */
+    .section {
+      padding: 64px 0;
+      position: relative;
+    }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--brown-deep);
+    }
+
+    .section-title .highlight {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .section-sub {
+      color: var(--slate-soft);
+      font-size: 1rem;
+      max-width: 500px;
+      margin-top: 8px;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 40px;
+      gap: 16px;
+    }
+
+    /* ========== OVERVIEW ========== */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    .overview-text p {
+      font-size: var(--text-md);
+      line-height: 1.85;
+      color: var(--slate);
+      margin-bottom: var(--space-4);
+    }
+
+    .overview-text .highlight-box {
+      background: rgba(184, 137, 58, 0.15);
+      border-left: 4px solid var(--gold);
+      padding: var(--space-4) var(--space-5);
+      border-radius: var(--radius-md);
+      margin: var(--space-4) 0;
+    }
+
+    .overview-text .highlight-box p {
+      margin-bottom: 0;
+      font-weight: 500;
+      color: var(--brown-deep);
+    }
+
+    /* ========== STAT CARDS ========== */
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+    }
+
+    .stat-card-custom {
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      border: 1px solid rgba(184, 137, 58, 0.12);
+      text-align: center;
+      transition: all var(--transition-base);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat-card-custom:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-medium);
+      border-color: rgba(184, 137, 58, 0.25);
+    }
+
+    .stat-card-custom .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1.2;
+    }
+
+    .stat-card-custom .stat-label {
+      font-size: 0.8rem;
+      color: var(--slate-soft);
+      font-weight: 500;
+      margin-top: var(--space-1);
+    }
+
+    .stat-card-custom .stat-icon {
+      font-size: 1.8rem;
+      color: var(--gold-pale);
+      margin-bottom: var(--space-2);
+    }
+
+    /* ========== CHART CARD ========== */
+    .chart-card {
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      border: 1px solid rgba(184, 137, 58, 0.12);
+      box-shadow: var(--shadow-soft);
+      transition: all var(--transition-base);
+    }
+
+    .chart-card:hover {
+      box-shadow: var(--shadow-medium);
+    }
+
+    .chart-card .chart-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--brown-deep);
+      margin-bottom: var(--space-4);
+      text-align: center;
+    }
+
+    .chart-card .chart-wrapper {
+      position: relative;
+      height: 280px;
+    }
+
+    .chart-card .chart-subtitle {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--slate-soft);
+      margin-top: var(--space-2);
+    }
+
+    /* ===== TABEL DINAMIS DARI ADMIN ===== */
+    .table-dinamis {
+      margin-top: var(--space-7);
+    }
+    .table-dinamis .table-wrapper {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .table-dinamis .table-header-dinamis {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 20px;
+      background: #2a2a2a;
+      border-bottom: 1px solid #3a3a3a;
+    }
+    .table-dinamis .table-header-dinamis h3 {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--gold-light);
+      font-size: 1.1rem;
+    }
+    .table-dinamis .table-header-dinamis .count {
+      font-size: 0.8rem;
+      color: var(--slate-soft);
+    }
+    .table-dinamis .table-header-dinamis .count span {
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .table-dinamis table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #1a1a1a;
+      min-width: 600px;
+    }
+    .table-dinamis table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gold-light);
+      background: #2c2c2c;
+      border-bottom: 2px solid #3a3a3a;
+      border-right: 1px solid #333;
+    }
+    .table-dinamis table th:last-child {
+      border-right: none;
+    }
+    .table-dinamis table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #2a2a2a;
+      border-right: 1px solid #2a2a2a;
+      color: var(--slate);
+      background: #1a1a1a;
+    }
+    .table-dinamis table td:last-child {
+      border-right: none;
+    }
+    .table-dinamis table tbody tr {
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .table-dinamis table tbody tr:hover td {
+      background: #282828;
+    }
+    .table-dinamis table tbody tr:active td {
+      background: #3a3a3a;
+    }
+    .table-dinamis .empty-state {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--slate-light);
+      background: #1a1a1a;
+    }
+    .table-dinamis .empty-state i {
+      font-size: 2rem;
+      color: rgba(184, 137, 58, 0.15);
+      margin-bottom: 8px;
+    }
+
+    /* ===== CSS BARU UNTUK KOLOM NO ===== */
+    .col-no {
+      width: 50px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .file-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 0.6rem;
+      font-weight: 600;
+      background: rgba(184, 137, 58, 0.12);
+      color: var(--gold-light);
+      margin-left: 6px;
+    }
+    .file-badge i {
+      font-size: 0.65rem;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-status.on-track {
+      background: #1B5E20;
+      color: #A5D6A7;
+    }
+
+    .badge-status.needs-attention {
+      background: #E65100;
+      color: #FFE0B2;
+    }
+
+    .badge-status.behind {
+      background: #B71C1C;
+      color: #EF9A9A;
+    }
+
+    .badge-status.completed {
+      background: #0D47A1;
+      color: #90CAF9;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      background: rgba(13, 13, 13, 0.95);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 48px 0 24px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer-brand .footer-logo {
+      font-size: 2rem;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    .footer-brand h3 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--gold-light);
+    }
+
+    .footer-col ul li a i {
+      width: 16px;
+      font-size: 0.7rem;
+      color: var(--gold);
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      gap: 12px;
+    }
+
+    .footer-bottom .dot {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin: 0 8px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-social a {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 1.1rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--gold-light);
+    }
+
+    /* ========== BACK TO TOP ========== */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff;
+      border: none;
+      box-shadow: var(--shadow-gold);
+      cursor: pointer;
+      font-size: 1.1rem;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    #backToTop.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #backToTop:hover {
+      transform: scale(1.08) translateY(-2px);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 992px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+      .stat-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .chart-card .chart-wrapper {
+        height: 280px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .page-header-custom {
+        padding: 7rem 0 2rem;
+      }
+      .stat-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-3);
+      }
+      .stat-card-custom {
+        padding: var(--space-3);
+      }
+      .stat-card-custom .stat-number {
+        font-size: 1.6rem;
+      }
+      .chart-card .chart-wrapper {
+        height: 220px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+      .btn-more span {
+        display: none;
+      }
+      .btn-more {
+        padding: 6px 12px;
+      }
+      .section {
+        padding: 40px 0;
+      }
+      .table-dinamis table {
+        font-size: 0.7rem;
+        min-width: 500px;
+      }
+      .table-dinamis table th,
+      .table-dinamis table td {
+        padding: 0.5rem 0.7rem;
+      }
+      .col-no {
+        width: 30px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .stat-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-2);
+      }
+      .stat-card-custom {
+        padding: var(--space-2);
+      }
+      .stat-card-custom .stat-number {
+        font-size: 1.2rem;
+      }
+      .stat-card-custom .stat-label {
+        font-size: 0.6rem;
+      }
+      .chart-card .chart-wrapper {
+        height: 200px;
+      }
+      .page-header-custom p {
+        font-size: 0.9rem;
+      }
+      .navbar-brand .brand-text {
+        font-size: 0.9rem;
+      }
+      .navbar-brand .brand-text span {
+        font-size: 0.55rem;
+      }
+      .table-dinamis table {
+        font-size: 0.65rem;
+        min-width: 380px;
+      }
+      .table-dinamis table th,
+      .table-dinamis table td {
+        padding: 0.4rem 0.5rem;
+      }
+      .col-no {
+        width: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ========== LOADER ========== -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-logo">
+      <i class="fas fa-archway"></i>
+      Budaya Banten
+    </div>
+    <div class="loader-bar">
+      <div class="loader-bar-fill"></div>
+    </div>
+    <p style="color:var(--slate-soft);margin-top:12px;font-size:0.85rem;">
+      Memuat data Adat Istiadat...
+    </p>
+  </div>
+
+  <!-- ========== OVERLAY ========== -->
+  <div class="body-overlay">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar" id="navbar">
+      <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">
+          <div class="brand-icon">
+            <img src="budayabanten.jpeg" alt="Logo Adat Istiadat">
+          </div>
+          <div class="brand-text">
+            Budaya Banten
+            <span>Provinsi Banten · 2026</span>
+          </div>
+        </a>
+
+        <ul class="navbar-links">
+          <li><a href="index.html#profil"><i class="fas fa-map-marked-alt"></i> Profil</a></li>
+          <li class="has-drop">
+            <a href="index.html#opk"><i class="fas fa-th-large"></i>OPK</a>
+            <ul class="navbar-dropdown">
+              <li><a href="tradisi_lisan.html"><i class="fas fa-microphone-alt"></i> Tradisi Lisan</a></li>
+              <li><a href="manuskrip.html"><i class="fas fa-scroll"></i> Manuskrip</a></li>
+              <li><a href="adat_istiadat.html" class="active"><i class="fas fa-hand-holding-heart"></i> Adat Istiadat</a></li>
+              <li><a href="ritus.html"><i class="fas fa-fire"></i> Ritus</a></li>
+              <li><a href="pengetahuan_tradisional.html"><i class="fas fa-tree"></i> Pengetahuan Tradisional</a></li>
+              <li><a href="teknologi_tradisional.html"><i class="fas fa-cogs"></i> Teknologi Tradisional</a></li>
+              <li><a href="seni.html"><i class="fas fa-palette"></i> Seni</a></li>
+              <li><a href="bahasa.html"><i class="fas fa-language"></i> Bahasa</a></li>
+              <li><a href="permainan_rakyat.html"><i class="fas fa-dice"></i> Permainan Rakyat</a></li>
+              <li><a href="olahraga_tradisional.html"><i class="fas fa-running"></i> Olahraga Tradisional</a></li>
+              <li><a href="cagar_budaya.html"><i class="fas fa-landmark"></i> Cagar Budaya</a></li>
+            </ul>
+          </li>
+          <li><a href="index.html#sumber"><i class="fas fa-book-open"></i> Sumber Data</a></li>
+          <li><a href="buku.html" class="buku-link"><i class="fas fa-book"></i> Buku</a></li>
+        </ul>
+
+        <div class="navbar-actions">
+          <div class="dropdown-more">
+            <button class="btn-more" id="btnMore">
+              <i class="fas fa-ellipsis-v"></i> <span>Lainnya</span>
+            </button>
+            <div class="dropdown-more-content" id="dropdownMore">
+              <a href="tugas_bidang_kebudayaan.html"><i class="fas fa-tasks"></i> Tugas Kebudayaan</a>
+              <a href="struktur.html"><i class="fas fa-chart-pie"></i> Struktur</a>
+              <a href="galeri.html"><i class="fas fa-images"></i> Galeri</a>
+              <a href="kontak.html"><i class="fas fa-envelope"></i> Kontak</a>
+            </div>
+          </div>
+          <input type="file" id="bgInput" accept="image/*" style="display:none;">
+          <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ========== DRAWER ========== -->
+    <nav class="navbar-drawer" id="navDrawer">
+      <ul>
+        <li class="drawer-label">Navigasi</li>
+        <li><a href="index.html#profil" class="drawer-link"><i class="fas fa-map-marked-alt"></i> Profil Banten</a></li>
+        <li><a href="index.html#opk" class="drawer-link"><i class="fas fa-th-large"></i>OPK</a></li>
+        <li><a href="index.html#sumber" class="drawer-link"><i class="fas fa-book-open"></i> Sumber Data</a></li>
+        <li><a href="buku.html" class="drawer-link" style="background:rgba(184,137,58,0.15);border-radius:10px;"><i class="fas fa-book"></i> Buku</a></li>
+        <li class="drawer-label">Kategori OPK</li>
+        <li><a href="tradisi_lisan.html"><i class="fas fa-microphone-alt"></i> Tradisi Lisan</a></li>
+        <li><a href="manuskrip.html"><i class="fas fa-scroll"></i> Manuskrip</a></li>
+        <li><a href="adat_istiadat.html" class="active"><i class="fas fa-hand-holding-heart"></i> Adat Istiadat</a></li>
+        <li><a href="ritus.html"><i class="fas fa-fire"></i> Ritus</a></li>
+        <li><a href="pengetahuan_tradisional.html"><i class="fas fa-tree"></i> Pengetahuan Tradisional</a></li>
+        <li><a href="teknologi_tradisional.html"><i class="fas fa-cogs"></i> Teknologi Tradisional</a></li>
+        <li><a href="seni.html"><i class="fas fa-palette"></i> Seni</a></li>
+        <li><a href="bahasa.html"><i class="fas fa-language"></i> Bahasa</a></li>
+        <li><a href="permainan_rakyat.html"><i class="fas fa-dice"></i> Permainan Rakyat</a></li>
+        <li><a href="olahraga_tradisional.html"><i class="fas fa-running"></i> Olahraga Tradisional</a></li>
+      </ul>
+    </nav>
+
+    <!-- ========== PAGE HEADER ========== -->
+    <div class="page-header-custom">
+      <div class="container">
+        <div class="header-top">
+          <div class="header-brand">
+            <div class="header-brand-icon large">
+              <img src="adat2.jpeg" alt="Logo Budaya Banten">
+            </div>
+            <div class="header-brand-text">
+              <h2></h2>
+              <span></span>
+              <div class="header-breadcrumb">
+                <a href="index.html">Beranda</a>
+                <span class="separator">&gt;</span>
+                <a href="ritus.html">Selanjutnya></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h1><br>Adat<span class="highlight"> Istiadat</span></h1>
+        <p>
+          Berkaitan dengan SDM dan lembaga beberapa objek jenis adat istiadat seperti;
+          adat istiadat tentang tata perilaku masyarakat, adat istiadat terkait perilaku
+          terhadap agama, perkawinan, gotong-royong, dan sebagainya. Terdapat 99% masih
+          sering dilakukan oleh Suku Baduy dan dapat ditemui di Kabupaten Lebak yang ada
+          di Provinsi Banten.
+        </p>
+      </div>
+    </div>
+
+    <!-- ========== OVERVIEW SECTION ========== -->
+    <section class="section" style="padding-top:var(--space-6);">
+      <div class="container">
+        <div class="overview-grid">
+          <div class="overview-text reveal" data-aos="fade-right">
+            <div class="section-eyebrow">Gambaran Umum</div>
+            <h2 class="section-title">Kondisi <span class="highlight">Adat Istiadat</span></h2>
+            <p>
+              Kelemahan SDM dalam konteks OPK Adat Istiadat yang ada di Provinsi Banten terutama
+              pada aspek penguatan pelaku adat. Namun demikian, dengan aktifnya penguatan lembaga
+              dan dewan adat di Provinsi Banten saat ini sangat prospektif dalam pengembangan
+              SDM adat.
+            </p>
+            <div class="highlight-box">
+              <p>
+                <i class="fas fa-exclamation-triangle" style="color:var(--gold);margin-right:10px;"></i>
+                <strong>Catatan Penting:</strong> Masih rendah dan perlu didorong dan diberikan
+                penguatan dan pengingatan. Sarana dan prasarana pemerintah masih perlu ditingkatkan
+                karena beberapa adat istiadat sudah mulai jarang dilakukan.
+              </p>
+            </div>
+            <p>
+              Distribusi sarana dan prasarana yang mendukung OPK Adat Istiadat di Provinsi Banten
+              terdiri dari <strong>22% sarana pemerintah</strong> dan <strong>78% sarana masyarakat</strong>.
+              Tidak dapat dipungkiri selain lemahnya SDM, kurangnya sarana dan prasarana pemerintah
+              ini juga menjadi salah satu faktor pemicu beberapa adat istiadat yang ada di Banten
+              sudah mulai jarang dilakukan.
+            </p>
+          </div>
+
+          <div class="reveal" data-aos="fade-left">
+            <div class="chart-card">
+              <div class="chart-title">Komposisi Sarana & Prasarana</div>
+              <div class="chart-wrapper">
+                <canvas id="distributionChart"></canvas>
+              </div>
+              <div class="chart-subtitle">
+                <span style="display:inline-block;width:12px;height:12px;background:#B8893A;border-radius:50%;margin-right:5px;"></span>
+                Pemerintah 22%
+                <span style="display:inline-block;width:12px;height:12px;background:#2E5444;border-radius:50%;margin:0 5px 0 15px;"></span>
+                Masyarakat 78%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== STATISTICS CARDS - DINAMIS ========== -->
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="stat-cards">
+          <div class="stat-card-custom reveal" data-aos="fade-up" data-aos-delay="0">
+            <div class="stat-icon"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="stat-number" id="statTotalProgram">0</div>
+            <div class="stat-label">Total Program</div>
+          </div>
+          <div class="stat-card-custom reveal" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-number" id="statKategori">0</div>
+            <div class="stat-label">Kabupaten Terlibat</div>
+          </div>
+          <div class="stat-card-custom reveal" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-icon"><i class="fas fa-building"></i></div>
+            <div class="stat-number" id="statLembagaAktif">0</div>
+            <div class="stat-label">Lembaga Aktif</div>
+          </div>
+          <div class="stat-card-custom reveal" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-icon"><i class="fas fa-flag"></i></div>
+            <div class="stat-number" id="statPeriode">2025-2029</div>
+            <div class="stat-label">Periode Program</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BAGIAN PROGRAM ADAT ISTIADAT ===== -->
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:var(--space-4);">
+          <div class="reveal" data-aos="fade-right">
+            <div class="section-eyebrow">Rencana Strategis</div>
+            <h2 class="section-title">Program <span class="highlight">Adat Istiadat</span></h2>
+            <p class="section-sub">Klik pada baris data untuk melihat detail lengkap.</p>
+          </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- TABEL DINAMIS DARI ADMIN (DENGAN KOLOM NO) -->
+        <!-- ================================================================ -->
+        <div class="table-dinamis reveal" data-aos="fade-up">
+          <div class="table-wrapper">
+            <div class="table-header-dinamis">
+              <h3><i class="fas fa-database"></i> Data Adat Istiadat (Input Admin)</h3>
+              <div class="count">Total Data: <span id="totalCountAdmin">0</span></div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="col-no">No.</th>
+                    <th>Kabupaten/Kota</th>
+                    <th>Nama Objek</th>
+                    <th>Deskripsi</th>
+                    <th style="width:80px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                  <tr>
+                    <td colspan="5">
+                      <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Belum ada data dari Admin. Silakan input melalui <a href="admin-8.html" style="color:var(--gold);">Admin Panel</a>.</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- ================================================================ -->
+
+      </div>
+    </section>
+    <!-- ===== AKHIR BAGIAN PROGRAM ADAT ISTIADAT ===== -->
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <p>Dashboard data sarana dan prasarana kebudayaan Provinsi Banten. Dibangun sebagai referensi perencanaan dan pemajuan kebudayaan daerah.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Navigasi</h4>
+            <ul>
+              <li><a href="index.html#profil"><i class="fas fa-map-marked-alt"></i> Profil Banten</a></li>
+              <li><a href="index.html#opk"><i class="fas fa-th-large"></i> OPK</a></li>
+              <li><a href="index.html#sumber"><i class="fas fa-book-open"></i> Sumber Data</a></li>
+              <li><a href="buku.html"><i class="fas fa-book"></i> Buku</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Kategori OPK</h4>
+            <ul>
+              <li><a href="tradisi_lisan.html"><i class="fas fa-microphone-alt"></i> Tradisi Lisan</a></li>
+              <li><a href="manuskrip.html"><i class="fas fa-scroll"></i> Manuskrip</a></li>
+              <li><a href="adat_istiadat.html"><i class="fas fa-hand-holding-heart"></i> Adat Istiadat</a></li>
+              <li><a href="ritus.html"><i class="fas fa-fire"></i> Ritus</a></li>
+              <li><a href="seni.html"><i class="fas fa-palette"></i> Seni</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Lebih Banyak</h4>
+            <ul>
+              <li><a href="pengetahuan_tradisional.html"><i class="fas fa-tree"></i> Pengetahuan Tradisional</a></li>
+              <li><a href="teknologi_tradisional.html"><i class="fas fa-cogs"></i> Teknologi Tradisional</a></li>
+              <li><a href="bahasa.html"><i class="fas fa-language"></i> Bahasa</a></li>
+              <li><a href="permainan_rakyat.html"><i class="fas fa-dice"></i> Permainan Rakyat</a></li>
+              <li><a href="olahraga_tradisional.html"><i class="fas fa-running"></i> Olahraga Tradisional</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Budaya Banten <span class="dot"></span> Provinsi Banten</span>
+          <span><span class="dot"></span> PPKD Banten 2025</span>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/kebudayaanbanten.official/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGn_f3p-QAcuSX_2kx79YLAGr-OWNcGBVUsKEW9jqhi9LA-qHTheydSLfg3Rxo_aem__HT6p5sGdewKURGPYYx5Vw" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/kebudayaanbanten.official?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPNTY3MDY3MzQzMzUyNDI3AAGn_f3p-QAcuSX_2kx79YLAGr-OWNcGBVUsKEW9jqhi9LA-qHTheydSLfg3Rxo_aem__HT6p5sGdewKURGPYYx5Vw" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://m.youtube.com/%40kebudayaanbanten.official?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAb21jcATKuWFleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAaf9_en5ABy5Jf_aTHv1gsAav45Y1wYFVSwoRb2OqGL0sD6odOF7J1It-DdHGg_aem__HT6p5sGdewKURGPYYx5Vw" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- /body-overlay -->
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // Loader
+      const loader = document.getElementById('pageLoader');
+      setTimeout(function() {
+        loader.classList.add('hidden');
+        setTimeout(function() {
+          loader.style.display = 'none';
+        }, 600);
+      }, 1500);
+
+      // AOS
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 50
+      });
+
+      // Navbar scroll
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+
+      // Hamburger
+      const hamburger = document.getElementById('hamburger');
+      const drawer = document.getElementById('navDrawer');
+      const body = document.body;
+
+      if (hamburger && drawer) {
+        hamburger.addEventListener('click', function() {
+          const isOpen = hamburger.classList.toggle('open');
+          drawer.classList.toggle('open', isOpen);
+          body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        document.querySelectorAll('.drawer-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            hamburger.classList.remove('open');
+            drawer.classList.remove('open');
+            body.style.overflow = '';
+          });
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && drawer.classList.contains('open')) {
+            hamburger.classList.remove('open');
+            drawer.classList.remove('open');
+            body.style.overflow = '';
+          }
+        });
+      }
+
+      // Dropdown Sarana (click toggle)
+      document.querySelectorAll('.has-drop').forEach(function(item) {
+        const link = item.querySelector('a');
+        const dropdown = item.querySelector('.navbar-dropdown');
+
+        if (link && dropdown) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            document.querySelectorAll('.has-drop').forEach(function(other) {
+              if (other !== item) {
+                other.classList.remove('open');
+              }
+            });
+
+            item.classList.toggle('open');
+          });
+        }
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.has-drop')) {
+          document.querySelectorAll('.has-drop').forEach(function(item) {
+            item.classList.remove('open');
+          });
+        }
+      });
+
+      // Dropdown Lainnya
+      const btnMore = document.getElementById('btnMore');
+      const dropdownMore = document.getElementById('dropdownMore');
+
+      if (btnMore && dropdownMore) {
+        btnMore.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdownMore.classList.toggle('open');
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.dropdown-more')) {
+            dropdownMore.classList.remove('open');
+          }
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            dropdownMore.classList.remove('open');
+          }
+        });
+      }
+
+      // Ganti Background Header (Ctrl+Shift+U)
+      const bgInput = document.getElementById('bgInput');
+      const heroBg = document.querySelector('.page-header-custom');
+
+      if (bgInput && heroBg) {
+        document.addEventListener('keydown', function(e) {
+          if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'U') {
+            e.preventDefault();
+            bgInput.click();
+          }
+        });
+
+        bgInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+          if (!validTypes.includes(file.type)) {
+            alert('Mohon upload file gambar (JPG, PNG, WEBP, atau GIF)');
+            this.value = '';
+            return;
+          }
+          if (file.size > 10 * 1024 * 1024) {
+            alert('Ukuran file terlalu besar (maksimal 10MB)');
+            this.value = '';
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            heroBg.style.transition = 'background-image 0.6s ease';
+            heroBg.style.backgroundImage = 'url(' + e.target.result + ')';
+            try {
+              localStorage.setItem('adatBackground', e.target.result);
+            } catch (err) {
+              console.warn('Could not save to localStorage:', err);
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+
+        try {
+          const savedBg = localStorage.getItem('adatBackground');
+          if (savedBg) {
+            heroBg.style.backgroundImage = 'url(' + savedBg + ')';
+          }
+        } catch (err) {
+          console.warn('Could not load saved background:', err);
+        }
+      }
+
+      // Back to Top
+      (function createBackToTop() {
+        const btn = document.createElement('button');
+        btn.id = 'backToTop';
+        btn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        document.body.appendChild(btn);
+
+        window.addEventListener('scroll', function() {
+          btn.classList.toggle('visible', window.scrollY > 500);
+        });
+
+        btn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      })();
+
+      // CHART: Distribusi Adat Istiadat
+      let distributionChartInstance = null;
+
+      function initCharts() {
+        const textColor = '#D0D0D0';
+
+        const distCtx = document.getElementById('distributionChart');
+        if (distCtx) {
+          if (distributionChartInstance) {
+            distributionChartInstance.destroy();
+          }
+
+          distributionChartInstance = new Chart(distCtx, {
+            type: 'doughnut',
+            data: {
+              labels: ['Pemerintah', 'Masyarakat'],
+              datasets: [{
+                data: [22, 78],
+                backgroundColor: ['#B8893A', '#2E5444'],
+                borderColor: '#2A2A2A',
+                borderWidth: 3,
+                hoverOffset: 10
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: {
+                    color: textColor,
+                    padding: 15,
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                    font: { size: 12, weight: '600' }
+                  }
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(40,40,40,0.9)',
+                  titleColor: '#E8DDD0',
+                  bodyColor: '#A0A0A0',
+                  borderColor: 'rgba(184,137,58,0.2)',
+                  borderWidth: 1,
+                  cornerRadius: 8,
+                  padding: 12,
+                  callbacks: {
+                    label: function(context) {
+                      var label = context.label || '';
+                      var value = context.parsed || 0;
+                      return label + ': ' + value + '%';
+                    }
+                  }
+                }
+              },
+              cutout: '65%'
+            }
+          });
+        }
+      }
+
+      setTimeout(initCharts, 500);
+
+      let resizeTimeout;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+          if (distributionChartInstance) {
+            distributionChartInstance.resize();
+          }
+        }, 250);
+      });
+
+      // ================================================================
+      // ===== STATISTIK DINAMIS (updateStats) =====
+      // ================================================================
+      function updateStats(data) {
+        try {
+          const items = data || [];
+          document.getElementById('statTotalProgram').textContent = items.length;
+          const kabSet = new Set(items.map(item => item.kabupaten).filter(Boolean));
+          document.getElementById('statKategori').textContent = kabSet.size || '0';
+          const aktif = items.filter(item =>
+            item.gambar_adat && Array.isArray(item.gambar_adat) && item.gambar_adat.length > 0
+          );
+          document.getElementById('statLembagaAktif').textContent = aktif.length;
+        } catch (e) {
+          console.warn('Gagal update statistik:', e);
+        }
+      }
+
+      // ================================================================
+      // ===== TABEL DINAMIS DARI ADMIN =====
+      // ================================================================
+      const STORAGE_KEY = 'admin_adat_istiadat';
+      const adminTableBody = document.getElementById('adminTableBody');
+      const totalCountAdmin = document.getElementById('totalCountAdmin');
+
+      function openDetailAdat(item) {
+        if (!item) return;
+        const encoded = encodeURIComponent(JSON.stringify(item));
+        window.open('detail_adat_istiadat.html?data=' + encoded, '_blank');
+      }
+
+      function loadAdminData() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const data = raw ? JSON.parse(raw) : [];
+
+          updateStats(data);
+
+          if (data.length === 0) {
+            adminTableBody.innerHTML = `
+              <tr>
+                <td colspan="5">
+                  <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Belum ada data dari Admin. Silakan input melalui <a href="admin-8.html" style="color:var(--gold);">Admin Panel</a>.</p>
+                  </div>
+                </td>
+              </tr>
+            `;
+            totalCountAdmin.textContent = '0';
+            return;
+          }
+
+          let html = '';
+          data.forEach((item, index) => {
+            let hasGambar = item.gambar_adat && Array.isArray(item.gambar_adat) && item.gambar_adat.length > 0;
+            let badge = '';
+            if (hasGambar) badge = `<span class="file-badge"><i class="fas fa-image"></i> ${item.gambar_adat.length}</span>`;
+
+            html += `
+              <tr class="clickable-row" data-index="${index}" style="cursor:pointer;">
+                <td class="col-no">${index + 1}</td>
+                <td>${item.kabupaten || '-'}</td>
+                <td>${item.nama_objek || '-'} ${badge}</td>
+                <td>${item.deskripsi ? (item.deskripsi.length > 30 ? item.deskripsi.substring(0, 30) + '...' : item.deskripsi) : '-'}</td>
+                <td>
+                  <button class="btn-detail-row" data-index="${index}" title="Lihat Detail" style="background:none;border:none;cursor:pointer;color:var(--gold-light);font-size:1rem;">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          });
+          adminTableBody.innerHTML = html;
+          totalCountAdmin.textContent = data.length;
+
+          // Event klik baris
+          document.querySelectorAll('#adminTableBody .clickable-row').forEach(row => {
+            row.addEventListener('click', function(e) {
+              if (e.target.closest('.btn-detail-row')) return;
+              const index = parseInt(this.dataset.index);
+              const item = data[index];
+              if (item) openDetailAdat(item);
+            });
+          });
+
+          // Event klik tombol detail
+          document.querySelectorAll('#adminTableBody .btn-detail-row').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              const index = parseInt(this.dataset.index);
+              const item = data[index];
+              if (item) openDetailAdat(item);
+            });
+          });
+
+        } catch (e) {
+          console.warn('Gagal load data admin:', e);
+        }
+      }
+
+      // Load awal
+      loadAdminData();
+
+      // Update jika ada perubahan dari tab lain
+      window.addEventListener('storage', function(e) {
+        if (e.key === STORAGE_KEY) {
+          loadAdminData();
+        }
+      });
+
+      // Update periodik
+      setInterval(loadAdminData, 3000);
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            const navbarHeight = document.getElementById('navbar')?.offsetHeight || 72;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          }
+        });
+      });
+
+      console.log('%c🤝 Adat Istiadat · Budaya Nusantara', 'font-size:20px;font-weight:bold;color:#B8893A;');
+      console.log('%c📊 Data Rencana Strategis 2025-2029', 'font-size:14px;color:#5C3D1E;');
+      console.log('%c📈 Distribusi Sarana: Pemerintah 22% | Masyarakat 78%', 'font-size:12px;color:#2E5444;');
+      console.log('%c🏛️ 99% dilakukan oleh Suku Baduy di Kab. Lebak', 'font-size:12px;color:#607D8B;');
+      console.log('%c📋 Data Admin dari localStorage: ' + STORAGE_KEY, 'font-size:12px;color:#607D8B;');
+      console.log('%c🖱️ Klik pada baris tabel untuk melihat detail adat istiadat', 'font-size:12px;color:#D4A853;');
+      console.log('✨ Shortcut: Ctrl+Shift+U (Ganti Background Header)');
+      console.log('✅ Halaman siap digunakan!');
+    });
+  </script>
+
+</body>
+</html>

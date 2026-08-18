@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard · Budaya Nusantara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ===== SEMUA CSS SAMA SEPERTI admin-22.html ===== */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Plus Jakarta Sans',sans-serif; background:#0d0d0d; color:#E8DDD0; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+        #loginPage { width:100%; max-width:400px; padding:32px 28px; background:rgba(30,30,30,0.92); border-radius:20px; border:1px solid rgba(184,137,58,0.2); box-shadow:0 8px 40px rgba(0,0,0,0.6); text-align:center; }
+        #loginPage h1 { font-family:'Playfair Display',serif; font-size:2rem; color:#D4A853; margin-bottom:4px; }
+        #loginPage p { color:#A0A0A0; font-size:0.9rem; margin-bottom:24px; }
+        #loginPage .form-group { margin-bottom:16px; text-align:left; }
+        #loginPage label { font-size:0.75rem; font-weight:600; color:#A0A0A0; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px; }
+        #loginPage input { width:100%; padding:12px 16px; border-radius:10px; border:1px solid rgba(184,137,58,0.15); background:#1A1A1A; color:#E8DDD0; font-size:0.95rem; }
+        #loginPage input:focus { outline:none; border-color:#D4A853; box-shadow:0 0 0 3px rgba(184,137,58,0.15); }
+        #loginPage .btn-login { width:100%; padding:12px; background:linear-gradient(135deg,#B8893A,#D4A853); color:#fff; font-weight:700; font-size:1rem; border:none; border-radius:10px; cursor:pointer; transition:all 0.3s; }
+        #loginPage .btn-login:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(184,137,58,0.4); }
+        #loginError { color:#EF5350; font-size:0.85rem; margin-top:12px; display:none; }
+        #adminPage { display:none; width:100%; min-height:100vh; background:#0d0d0d; }
+        #adminPage.active { display:flex; }
+        .sidebar { width:250px; min-height:100vh; background:rgba(20,20,20,0.95); backdrop-filter:blur(8px); border-right:1px solid rgba(184,137,58,0.08); padding:20px 12px; display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; }
+        .sidebar .brand { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:#D4A853; padding:0 12px 16px; border-bottom:1px solid rgba(184,137,58,0.08); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+        .sidebar .brand i { font-size:1.5rem; }
+        .sidebar .menu-label { font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:#707070; padding:12px 12px 6px; font-weight:700; }
+        .sidebar .menu-item { display:flex; align-items:center; gap:12px; padding:9px 14px; border-radius:10px; font-weight:500; font-size:0.82rem; color:#B0B0B0; cursor:pointer; transition:all 0.2s; margin-bottom:2px; border:none; background:transparent; width:100%; text-align:left; font-family:'Plus Jakarta Sans',sans-serif; }
+        .sidebar .menu-item i { width:20px; color:#707070; transition:color 0.2s; }
+        .sidebar .menu-item:hover { background:rgba(184,137,58,0.08); color:#E8DDD0; }
+        .sidebar .menu-item:hover i { color:#D4A853; }
+        .sidebar .menu-item.active { background:rgba(184,137,58,0.15); color:#D4A853; }
+        .sidebar .menu-item.active i { color:#D4A853; }
+        .sidebar .logout-wrap { margin-top:auto; border-top:1px solid rgba(184,137,58,0.08); padding-top:14px; }
+        .sidebar .logout-wrap .menu-item { color:#EF5350; }
+        .sidebar .logout-wrap .menu-item i { color:#EF5350; }
+        .sidebar .logout-wrap .menu-item:hover { background:rgba(239,83,80,0.1); }
+        .main-content { flex:1; padding:28px 36px; overflow-y:auto; max-height:100vh; }
+        .main-content .page-title { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:#D4A853; margin-bottom:4px; }
+        .main-content .page-sub { color:#A0A0A0; font-size:0.85rem; margin-bottom:20px; }
+        .form-card { background:rgba(30,30,30,0.85); border-radius:14px; padding:22px 26px; border:1px solid rgba(184,137,58,0.08); margin-bottom:24px; }
+        .form-card .form-title { font-weight:700; font-size:1rem; color:#D4A853; margin-bottom:14px; }
+        .form-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+        .form-group { display:flex; flex-direction:column; gap:3px; }
+        .form-group label { font-size:0.7rem; font-weight:600; color:#A0A0A0; text-transform:uppercase; letter-spacing:0.5px; }
+        .form-group input, .form-group textarea, .form-group select { padding:9px 12px; border-radius:8px; border:1px solid rgba(184,137,58,0.12); background:#1A1A1A; color:#E8DDD0; font-size:0.85rem; transition:border 0.3s; font-family:'Plus Jakarta Sans',sans-serif; width:100%; }
+        .form-group textarea { resize:vertical; min-height:80px; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline:none; border-color:#D4A853; }
+        .form-group input:disabled { opacity:0.5; cursor:not-allowed; }
+
+        /* ===== FILE UPLOAD ===== */
+        .file-upload-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .file-upload-wrapper .upload-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .file-upload-wrapper input[type="file"] {
+            display: none;
+        }
+        .file-upload-wrapper .file-count {
+            font-size: 0.8rem;
+            color: #A0A0A0;
+            padding: 6px 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 6px;
+            border: 1px solid rgba(184,137,58,0.08);
+        }
+        .file-upload-wrapper .file-count.has-file {
+            color: #D4A853;
+            border-color: rgba(184,137,58,0.3);
+        }
+        .btn-upload {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            border: 1px solid rgba(184,137,58,0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: rgba(184,137,58,0.1);
+            color: #D4A853;
+        }
+        .btn-upload:hover {
+            background: rgba(184,137,58,0.2);
+            border-color: #B8893A;
+        }
+        .btn-upload i { font-size: 0.8rem; }
+
+        .file-grid-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+            max-height: 160px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+        .file-grid-preview .preview-item {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(184,137,58,0.1);
+            aspect-ratio: 1;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 4px;
+            text-align: center;
+        }
+        .file-grid-preview .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .file-grid-preview .preview-item .file-icon {
+            font-size: 1.8rem;
+            color: #D4A853;
+        }
+        .file-grid-preview .preview-item .file-name {
+            font-size: 0.5rem;
+            color: #A0A0A0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            margin-top: 2px;
+        }
+        .file-grid-preview .preview-item .remove-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(198,40,40,0.8);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 5;
+        }
+        .file-grid-preview .preview-item .remove-btn:hover {
+            background: #C62828;
+            transform: scale(1.1);
+        }
+
+        .form-actions { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+        .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:8px; font-weight:600; font-size:0.8rem; border:none; cursor:pointer; transition:all 0.3s; font-family:'Plus Jakarta Sans',sans-serif; }
+        .btn-primary { background:linear-gradient(135deg,#B8893A,#D4A853); color:#fff; }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(184,137,58,0.3); }
+        .btn-outline { background:transparent; color:#D4A853; border:1.5px solid #B8893A; }
+        .btn-outline:hover { background:rgba(184,137,58,0.08); }
+        .btn-danger { background:#C62828; color:#fff; }
+        .btn-danger:hover { background:#B71C1C; }
+        .btn-sm { padding:4px 10px; font-size:0.7rem; }
+
+        .table-wrap { background:rgba(30,30,30,0.85); border-radius:14px; border:1px solid rgba(184,137,58,0.08); overflow:hidden; }
+        .table-wrap .table-header { padding:12px 18px; background:rgba(184,137,58,0.04); border-bottom:1px solid rgba(184,137,58,0.06); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
+        .table-wrap .table-header h4 { font-weight:600; color:#D4A853; font-size:0.95rem; }
+        .table-wrap .table-header .count { font-size:0.75rem; color:#A0A0A0; }
+        .table-wrap .table-header .count span { color:#D4A853; font-weight:700; }
+        .table-scroll { overflow-x:auto; padding:0 4px 4px 4px; }
+        table { width:100%; border-collapse:collapse; font-size:0.75rem; min-width:700px; }
+        table th { padding:8px 10px; text-align:left; font-weight:700; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px; color:#A0A0A0; border-bottom:2px solid rgba(184,137,58,0.08); white-space:nowrap; }
+        table td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.04); color:#E8DDD0; vertical-align:middle; }
+        table tbody tr:hover { background:rgba(184,137,58,0.03); }
+        table tbody tr { cursor:pointer; }
+        .empty-state { text-align:center; padding:32px 16px; color:#707070; }
+        .empty-state i { font-size:2.2rem; color:rgba(184,137,58,0.15); margin-bottom:6px; }
+        .badge-status { display:inline-block; padding:2px 10px; border-radius:9999px; font-size:0.65rem; font-weight:600; }
+        .badge-status.Ditetapkan { background:rgba(46,125,50,0.2); color:#66BB6A; }
+        .badge-status.Belum { background:rgba(198,40,40,0.2); color:#EF5350; }
+        .badge-status.Proses { background:rgba(255,193,7,0.2); color:#FFD54F; }
+        .badge-status.Perhatian { background:rgba(255,152,0,0.2); color:#FFB74D; }
+        .file-thumb { width:30px; height:30px; border-radius:4px; object-fit:cover; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; }
+        .file-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            background: rgba(184,137,58,0.12);
+            color: #D4A853;
+        }
+        .file-badge i { font-size: 0.65rem; }
+
+        @media (max-width:768px) {
+            #adminPage.active { flex-direction:column; }
+            .sidebar { width:100%; min-height:auto; height:auto; position:relative; padding:12px; border-right:none; border-bottom:1px solid rgba(184,137,58,0.08); }
+            .sidebar .brand { font-size:1.1rem; padding-bottom:10px; margin-bottom:10px; }
+            .sidebar .menu-item { padding:7px 10px; font-size:0.75rem; }
+            .main-content { padding:16px; max-height:none; overflow-y:visible; }
+            .main-content .page-title { font-size:1.4rem; }
+            .form-grid { grid-template-columns:1fr 1fr; }
+            .file-grid-preview { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+        }
+        @media (max-width:480px) { .form-grid { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+    <div id="loginPage">
+        <h1><i class="fas fa-crown" style="color:#D4A853;"></i> Admin</h1>
+        <p>Masuk ke dashboard pengelolaan budaya</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="admin" value="admin" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" value="admin123" />
+            </div>
+            <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+            <div id="loginError">Username atau password salah!</div>
+        </form>
+    </div>
+    <div id="adminPage">
+        <aside class="sidebar">
+            <div class="brand"><i class="fas fa-crown"></i> Admin Panel</div>
+            <div class="menu-label">Data Budaya</div>
+            <button class="menu-item active" data-menu="tradisi_lisan"><i class="fas fa-microphone-alt"></i> Tradisi Lisan</button>
+            <button class="menu-item" data-menu="manuskrip"><i class="fas fa-scroll"></i> Manuskrip</button>
+            <button class="menu-item" data-menu="adat_istiadat"><i class="fas fa-hand-holding-heart"></i> Adat Istiadat</button>
+            <button class="menu-item" data-menu="ritus"><i class="fas fa-fire"></i> Ritus</button>
+            <button class="menu-item" data-menu="pengetahuan_tradisional"><i class="fas fa-tree"></i> Pengetahuan Tradisional</button>
+            <button class="menu-item" data-menu="teknologi_tradisional"><i class="fas fa-cogs"></i> Teknologi Tradisional</button>
+            <button class="menu-item" data-menu="seni"><i class="fas fa-palette"></i> Seni</button>
+            <button class="menu-item" data-menu="bahasa"><i class="fas fa-language"></i> Bahasa</button>
+            <button class="menu-item" data-menu="permainan_rakyat"><i class="fas fa-dice"></i> Permainan Rakyat</button>
+            <button class="menu-item" data-menu="olahraga_tradisional"><i class="fas fa-running"></i> Olahraga Tradisional</button>
+            <button class="menu-item" data-menu="cagar_budaya"><i class="fas fa-landmark"></i> Cagar Budaya</button>
+            <button class="menu-item" data-menu="struktur"><i class="fas fa-sitemap"></i> Struktur</button>
+            <!-- ===== MENU GALERI (TAMBAHAN) ===== -->
+            <button class="menu-item" data-menu="galeri"><i class="fas fa-images"></i> Galeri</button>
+            <div class="logout-wrap">
+                <button class="menu-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </aside>
+        <main class="main-content" id="mainContent">
+            <h2 class="page-title" id="pageTitle">Tradisi Lisan</h2>
+            <p class="page-sub" id="pageSub">Kelola data Tradisi Lisan di Provinsi Banten</p>
+            <div class="form-card">
+                <div class="form-title" id="formTitle"><i class="fas fa-plus-circle"></i> Tambah Data</div>
+                <form id="dataForm">
+                    <div class="form-grid" id="formFields"></div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-save"></i> Simpan</button>
+                        <button type="button" class="btn btn-outline" id="btnCancel" style="display:none;"><i class="fas fa-times"></i> Batal</button>
+                        <button type="button" class="btn btn-danger btn-sm" id="btnDeleteAll" style="margin-left:auto;"><i class="fas fa-trash"></i> Hapus Semua</button>
+                    </div>
+                </form>
+            </div>
+            <div class="table-wrap">
+                <div class="table-header">
+                    <h4><i class="fas fa-list"></i> Daftar Data</h4>
+                    <div class="count">Total: <span id="totalCount">0</span></div>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===== KONFIGURASI MENU =====
+            const MENU_CONFIG = {
+                tradisi_lisan: {
+  label: 'Tradisi Lisan',
+  fields: [
+    { key: 'kabupaten', label: 'Kabupaten/Kota', type: 'text', required: true },
+    { key: 'nama_objek', label: 'Nama Objek', type: 'text', required: true },
+    { key: 'nama_tradisi', label: 'Nama Tradisi Lisan', type: 'text', required: true },
+    { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' },
+    // ===== TAMBAHAN =====
+    { key: 'keterangan', label: 'Keterangan', type: 'select', options: ['Aktif', 'Tidak Aktif'], required: true },
+    // ===== AKHIR TAMBAHAN =====
+    { key: 'audio', label: 'Upload Audio (MP3/WAV)', type: 'file', accept: 'audio/*' },
+    { key: 'dokumen', label: 'Upload Dokumen (PDF/DOC)', type: 'file', multiple: true, accept: '.pdf,.doc,.docx' }
+  ]
+                },
+                manuskrip: {
+                    label: 'Manuskrip',
+                    fields: [
+                        { key: 'pemilik', label: 'Pemilik/Penyimpan', type: 'text', required: true },
+                        { key: 'alamat', label: 'Alamat', type: 'text', required: true },
+                        { key: 'jumlah', label: 'Jumlah Naskah', type: 'number', required: true },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' },
+                        { key: 'gambar_manuskrip', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' },
+                        { key: 'dokumen', label: 'Upload Dokumen (PDF/DOC)', type: 'file', multiple: true, accept: '.pdf,.doc,.docx' }
+                    ]
+                },
+                adat_istiadat: {
+                    label: 'Adat Istiadat',
+                    fields: [
+                        { key: 'kabupaten', label: 'Kabupaten/Kota', type: 'text', required: true },
+                        { key: 'nama_objek', label: 'Nama Objek', type: 'text', required: true },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea', required: true },
+                        { key: 'gambar_adat', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' }
+                    ]
+                },
+                ritus: {
+                    label: 'Ritus',
+                    fields: [
+                        { key: 'umur', label: 'Umur / Tahun', type: 'number' },
+                        { key: 'bulan', label: 'Bulan', type: 'number' },
+                        { key: 'kondisi', label: 'Kondisi Anak', type: 'text' },
+                        { key: 'priangan', label: 'Priangan', type: 'text' },
+                        { key: 'banten', label: 'Banten', type: 'text' },
+                        { key: 'mainan', label: 'Mainan', type: 'text' },
+                        { key: 'syair', label: 'Syair', type: 'text' },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' },
+                        { key: 'gambar_ritus', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' }
+                    ]
+                },
+                pengetahuan_tradisional: {
+                    label: 'Pengetahuan Tradisional',
+                    fields: [
+                        { key: 'kabupaten', label: 'Kabupaten/Kota', type: 'text', required: true },
+                        { key: 'nama_pengetahuan', label: 'Nama Pengetahuan Tradisional', type: 'text', required: true },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' },
+                        { key: 'gambar_pengetahuan', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' }
+                    ]
+                },
+                teknologi_tradisional: {
+                    label: 'Teknologi Tradisional',
+                    fields: [
+                        { key: 'no', label: 'No.', type: 'number' },
+                        { key: 'bahasa_sunda', label: 'Bahasa Sunda (BANTEN)', type: 'text' },
+                        { key: 'bahasa_jawa', label: 'Bahasa Jawa (BANTEN)', type: 'text' },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' },
+                        { key: 'gambar_teknologi', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' }
+                    ]
+                },
+                seni: {
+                    label: 'Seni',
+                    fields: [
+                        { key: 'nama_lembaga', label: 'NAMA LEMBAGA/SANGGAR/KOMUNITAS', type: 'text', required: true },
+                        { key: 'ketua', label: 'KETUA/PEMIMPIN', type: 'text', required: true },
+                        { key: 'jenis_seni', label: 'JENIS SENI', type: 'select', options: ['Seni Rupa', 'Seni Musik', 'Seni Teater', 'Seni Tari', 'Seni Media', 'Seni Film', 'Seni Sastra'], required: true },
+                        { key: 'anggota', label: 'ANGGOTA (jumlah)', type: 'number', required: true },
+                        { key: 'deskripsi', label: 'DESKRIPSI', type: 'textarea' },
+                        { key: 'gambar_seni', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' },
+                        { key: 'dokumen', label: 'Upload Dokumen (PDF/DOC)', type: 'file', multiple: true, accept: '.pdf,.doc,.docx' }
+                    ]
+                },
+                bahasa: {
+                    label: 'Bahasa',
+                    fields: [
+                        { key: 'kabupaten', label: 'Kabupaten/Kota', type: 'text', required: true },
+                        { key: 'nama_bahasa', label: 'Nama Bahasa', type: 'text', required: true },
+                        { key: 'berkembang', label: 'Berkembang', type: 'select', options: ['Ya', 'Kurang', 'Tidak'], required: true },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' }
+                    ]
+                },
+                permainan_rakyat: {
+                    label: 'Permainan Rakyat',
+                    fields: [
+                        { key: 'kabupaten', label: 'Kabupaten/Kota', type: 'text', required: true },
+                        { key: 'nama_permainan', label: 'Nama Permainan Rakyat', type: 'text', required: true },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' },
+                        { key: 'gambar_permainan', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' }
+                    ]
+                },
+                olahraga_tradisional: {
+                    label: 'Olahraga Tradisional',
+                    fields: [
+                        { key: 'kabupaten', label: 'Kabupaten/Kota', type: 'text', required: true },
+                        { key: 'nama_olahraga', label: 'Nama Olahraga Tradisional', type: 'text', required: true },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' },
+                        { key: 'gambar_olahraga', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' }
+                    ]
+                },
+                cagar_budaya: {
+                    label: 'Cagar Budaya',
+                    fields: [
+                        { key: 'nama_objek', label: 'Nama Objek', type: 'text', required: true },
+                        { key: 'sk', label: 'SK / Penetapan', type: 'text', required: true },
+                        { key: 'kabupaten_kota', label: 'Kabupaten/Kota (Kini)', type: 'text', required: true },
+                        { key: 'provinsi', label: 'Provinsi (Kini)', type: 'text', required: true },
+                        { key: 'peringkat', label: 'Peringkat', type: 'select', options: ['Provinsi', 'Kabupaten/Kota', 'Nasional','belum ada peringkat'], required: true },
+                        { key: 'status_percepatan', label: 'Status Percepatan', type: 'select', options: ['Ditetapkan', 'Dalam Proses', 'Belum Ditetapkan', 'Perlu Perhatian', 'Tidak Aktif','ODCB'], required: true },
+                        { key: 'gambar_cagar', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' },
+                        { key: 'dokumen_cagar', label: 'Upload Dokumen (PDF/DOC)', type: 'file', multiple: true, accept: '.pdf,.doc,.docx' },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea' }
+                    ]
+                },
+                struktur: {
+                    label: 'Struktur Organisasi',
+                    fields: [
+                        { key: 'kepala_bidang_nama', label: 'Nama Kepala Bidang', type: 'text' },
+                        { key: 'kepala_bidang_jabatan', label: 'Jabatan', type: 'text' },
+                        { key: 'cagar_budaya', label: 'Cagar Budaya (satu nama per baris)', type: 'textarea' },
+                        { key: 'kesenian_bahasa', label: 'Kesenian & Bahasa (satu nama per baris)', type: 'textarea' },
+                        { key: 'sejarah_tradisi', label: 'Sejarah & Tradisi (satu nama per baris)', type: 'textarea' }
+                    ]
+                },
+                // ===== TAMBAHAN MENU GALERI =====
+                galeri: {
+                    label: 'Galeri',
+                    fields: [
+                        { key: 'tag', label: 'Kategori / Tag', type: 'text', required: true },
+                        { key: 'judul', label: 'Judul', type: 'text', required: true },
+                        { key: 'deskripsi', label: 'Deskripsi', type: 'textarea', required: true },
+                        { key: 'gambar', label: 'Upload Gambar (JPG/PNG)', type: 'file', multiple: true, accept: 'image/*' }
+                    ]
+                }
+            };
+
+            let currentMenu = 'tradisi_lisan';
+            let editIndex = -1;
+            let audioFile = '';
+            let dokumenList = [];
+            let gambarManuskripList = [];
+            let gambarCagarList = [];
+            let gambarAdatList = [];
+            let gambarRitusList = [];
+            let gambarPengetahuanList = [];
+            let gambarTeknologiList = [];
+            let gambarPermainanList = [];
+            let gambarOlahragaList = [];
+            let gambarSeniList = [];
+            let dokumenCagarList = [];
+            // ===== UNTUK GALERI =====
+            let gambarGaleriList = [];
+
+            const loginPage = document.getElementById('loginPage');
+            const adminPage = document.getElementById('adminPage');
+            const loginForm = document.getElementById('loginForm');
+            const loginError = document.getElementById('loginError');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const menuItems = document.querySelectorAll('.menu-item[data-menu]');
+            const pageTitle = document.getElementById('pageTitle');
+            const pageSub = document.getElementById('pageSub');
+            const formTitle = document.getElementById('formTitle');
+            const dataForm = document.getElementById('dataForm');
+            const formFields = document.getElementById('formFields');
+            const btnSubmit = document.getElementById('btnSubmit');
+            const btnCancel = document.getElementById('btnCancel');
+            const btnDeleteAll = document.getElementById('btnDeleteAll');
+            const tableHead = document.getElementById('tableHead');
+            const tableBody = document.getElementById('tableBody');
+            const totalCount = document.getElementById('totalCount');
+
+            const MAX_FILE_SIZE = 100 * 1024 * 1024;
+
+            function getStorageKey(menu) { return 'admin_' + menu; }
+
+            function loadData(menu) {
+                try { 
+                    const raw = localStorage.getItem(getStorageKey(menu)); 
+                    return raw ? JSON.parse(raw) : []; 
+                } catch (e) { return []; }
+            }
+
+            function saveData(menu, data) {
+                localStorage.setItem(getStorageKey(menu), JSON.stringify(data));
+                window.dispatchEvent(new Event('storage'));
+            }
+
+            function createPlaceholderImage(text, bgColor, textColor) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 400;
+                canvas.height = 400;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = bgColor || '#2E5444';
+                ctx.fillRect(0, 0, 400, 400);
+                ctx.strokeStyle = '#B8893A';
+                ctx.lineWidth = 4;
+                ctx.strokeRect(10, 10, 380, 380);
+                ctx.fillStyle = textColor || '#E8DDD0';
+                ctx.font = 'bold 28px serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text || 'Galeri', 200, 200);
+                ctx.font = '18px sans-serif';
+                ctx.fillStyle = '#D4A853';
+                ctx.fillText('Banten', 200, 250);
+                return canvas.toDataURL('image/png');
+            }
+
+            function validateFileSize(file, maxSize) {
+                if (file.size > maxSize) {
+                    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    const maxMB = (maxSize / (1024 * 1024)).toFixed(0);
+                    alert(`File "${file.name}" terlalu besar (${sizeMB}MB). Maksimal ${maxMB}MB.`);
+                    return false;
+                }
+                return true;
+            }
+
+            function renderForm(menu) {
+                const config = MENU_CONFIG[menu];
+                if (!config) return;
+                let html = '';
+                config.fields.forEach(f => {
+                    const required = f.required ? 'required' : '';
+                    let input = '';
+                    if (f.type === 'textarea') {
+                        input = `<textarea id="field_${f.key}" ${required} placeholder="Masukkan ${f.label.toLowerCase()}"></textarea>`;
+                    } else if (f.type === 'select') {
+                        let opts = f.options.map(o => `<option value="${o}">${o}</option>`).join('');
+                        input = `<select id="field_${f.key}" ${required}>${opts}</select>`;
+                    } else if (f.type === 'file') {
+                        const multiple = f.multiple ? 'multiple' : '';
+                        const accept = f.accept ? `accept="${f.accept}"` : '';
+                        input = `
+                            <div class="file-upload-wrapper">
+                                <div class="upload-area">
+                                    <input type="file" id="field_${f.key}" ${accept} ${multiple} data-max-size="100" />
+                                    <button type="button" class="btn-upload" onclick="document.getElementById('field_${f.key}').click()">
+                                        <i class="fas fa-folder-open"></i> ${f.multiple ? 'Pilih File' : 'Pilih File'}
+                                    </button>
+                                    <span class="file-count" id="file_count_${f.key}">${f.multiple ? '0 file dipilih' : 'Belum ada file'}</span>
+                                </div>
+                                <div class="file-grid-preview" id="preview_grid_${f.key}">
+                                    <!-- Preview akan diisi JavaScript -->
+                                </div>
+                                ${f.key === 'audio' ? `<div class="audio-preview" id="audio_preview_${f.key}"></div>` : ''}
+                            </div>
+                        `;
+                    } else {
+                        input = `<input type="${f.type}" id="field_${f.key}" ${required} placeholder="Masukkan ${f.label.toLowerCase()}" />`;
+                    }
+                    html += `<div class="form-group"><label for="field_${f.key}">${f.label}</label>${input}</div>`;
+                });
+                formFields.innerHTML = html;
+
+                // ===== EVENT LISTENER UNTUK AUDIO =====
+                const audioInput = document.getElementById('field_audio');
+                if (audioInput) {
+                    audioInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        if (!validateFileSize(file, MAX_FILE_SIZE)) { this.value = ''; return; }
+                        const fileCount = document.getElementById('file_count_audio');
+                        const previewDiv = document.getElementById('audio_preview_audio');
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            audioFile = event.target.result;
+                            if (previewDiv) {
+                                previewDiv.innerHTML = `<audio controls style="width:100%;"><source src="${audioFile}" type="${file.type}"></audio>`;
+                            }
+                            if (fileCount) {
+                                fileCount.textContent = file.name;
+                                fileCount.classList.add('has-file');
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK DOKUMEN =====
+                const dokumenInput = document.getElementById('field_dokumen');
+                if (dokumenInput) {
+                    dokumenInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                dokumenList.push(event.target.result);
+                                renderDokumenPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR MANUSKRIP =====
+                const gambarManuskripInput = document.getElementById('field_gambar_manuskrip');
+                if (gambarManuskripInput) {
+                    gambarManuskripInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarManuskripList.push(event.target.result);
+                                renderGambarManuskripPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR CAGAR =====
+                const gambarCagarInput = document.getElementById('field_gambar_cagar');
+                if (gambarCagarInput) {
+                    gambarCagarInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarCagarList.push(event.target.result);
+                                renderGambarCagarPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK DOKUMEN CAGAR =====
+                const dokumenCagarInput = document.getElementById('field_dokumen_cagar');
+                if (dokumenCagarInput) {
+                    dokumenCagarInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                dokumenCagarList.push(event.target.result);
+                                renderDokumenCagarPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR ADAT =====
+                const gambarAdatInput = document.getElementById('field_gambar_adat');
+                if (gambarAdatInput) {
+                    gambarAdatInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarAdatList.push(event.target.result);
+                                renderGambarAdatPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR RITUS =====
+                const gambarRitusInput = document.getElementById('field_gambar_ritus');
+                if (gambarRitusInput) {
+                    gambarRitusInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarRitusList.push(event.target.result);
+                                renderGambarRitusPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR PENGETAHUAN =====
+                const gambarPengetahuanInput = document.getElementById('field_gambar_pengetahuan');
+                if (gambarPengetahuanInput) {
+                    gambarPengetahuanInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarPengetahuanList.push(event.target.result);
+                                renderGambarPengetahuanPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR TEKNOLOGI =====
+                const gambarTeknologiInput = document.getElementById('field_gambar_teknologi');
+                if (gambarTeknologiInput) {
+                    gambarTeknologiInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarTeknologiList.push(event.target.result);
+                                renderGambarTeknologiPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR PERMAINAN =====
+                const gambarPermainanInput = document.getElementById('field_gambar_permainan');
+                if (gambarPermainanInput) {
+                    gambarPermainanInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarPermainanList.push(event.target.result);
+                                renderGambarPermainanPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR OLAHRAGA =====
+                const gambarOlahragaInput = document.getElementById('field_gambar_olahraga');
+                if (gambarOlahragaInput) {
+                    gambarOlahragaInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarOlahragaList.push(event.target.result);
+                                renderGambarOlahragaPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR SENI =====
+                const gambarSeniInput = document.getElementById('field_gambar_seni');
+                if (gambarSeniInput) {
+                    gambarSeniInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarSeniList.push(event.target.result);
+                                renderGambarSeniPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+
+                // ===== EVENT LISTENER UNTUK GAMBAR GALERI =====
+                const gambarGaleriInput = document.getElementById('field_gambar');
+                if (gambarGaleriInput) {
+                    gambarGaleriInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            if (!validateFileSize(files[i], MAX_FILE_SIZE)) { this.value = ''; return; }
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                gambarGaleriList.push(event.target.result);
+                                renderGambarGaleriPreview();
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                        this.value = '';
+                    });
+                }
+            }
+
+            // ===== RENDER PREVIEW DOKUMEN =====
+           function renderDokumenPreview() {
+                const previewGrid = document.getElementById('preview_grid_dokumen');
+                const fileCount = document.getElementById('file_count_dokumen');
+                if (!previewGrid) return;
+                if (dokumenList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                dokumenList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `File ${index+1}`;
+                    const isPDF = file.includes('pdf') || file.includes('application/pdf');
+                    html += `
+                        <div class="preview-item">
+                            <div class="file-icon"><i class="fas ${isPDF ? 'fa-file-pdf' : 'fa-file-word'}"></i></div>
+                            <div class="file-name">${fileName.substring(0, 15)}${fileName.length > 15 ? '...' : ''}</div>
+                            <button type="button" class="remove-btn" onclick="removeDokumen(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${dokumenList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderDokumenCagarPreview() {
+                const previewGrid = document.getElementById('preview_grid_dokumen_cagar');
+                const fileCount = document.getElementById('file_count_dokumen_cagar');
+                if (!previewGrid) return;
+                if (dokumenCagarList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                dokumenCagarList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `File ${index+1}`;
+                    const isPDF = file.includes('pdf') || file.includes('application/pdf');
+                    html += `
+                        <div class="preview-item">
+                            <div class="file-icon"><i class="fas ${isPDF ? 'fa-file-pdf' : 'fa-file-word'}"></i></div>
+                            <div class="file-name">${fileName.substring(0, 15)}${fileName.length > 15 ? '...' : ''}</div>
+                            <button type="button" class="remove-btn" onclick="removeDokumenCagar(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${dokumenCagarList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarManuskripPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_manuskrip');
+                const fileCount = document.getElementById('file_count_gambar_manuskrip');
+                if (!previewGrid) return;
+                if (gambarManuskripList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarManuskripList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarManuskrip(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarManuskripList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarCagarPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_cagar');
+                const fileCount = document.getElementById('file_count_gambar_cagar');
+                if (!previewGrid) return;
+                if (gambarCagarList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarCagarList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarCagar(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarCagarList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarAdatPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_adat');
+                const fileCount = document.getElementById('file_count_gambar_adat');
+                if (!previewGrid) return;
+                if (gambarAdatList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarAdatList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarAdat(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarAdatList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarRitusPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_ritus');
+                const fileCount = document.getElementById('file_count_gambar_ritus');
+                if (!previewGrid) return;
+                if (gambarRitusList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarRitusList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarRitus(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarRitusList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarPengetahuanPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_pengetahuan');
+                const fileCount = document.getElementById('file_count_gambar_pengetahuan');
+                if (!previewGrid) return;
+                if (gambarPengetahuanList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarPengetahuanList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarPengetahuan(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarPengetahuanList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarTeknologiPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_teknologi');
+                const fileCount = document.getElementById('file_count_gambar_teknologi');
+                if (!previewGrid) return;
+                if (gambarTeknologiList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarTeknologiList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarTeknologi(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarTeknologiList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarPermainanPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_permainan');
+                const fileCount = document.getElementById('file_count_gambar_permainan');
+                if (!previewGrid) return;
+                if (gambarPermainanList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarPermainanList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarPermainan(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarPermainanList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarOlahragaPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_olahraga');
+                const fileCount = document.getElementById('file_count_gambar_olahraga');
+                if (!previewGrid) return;
+                if (gambarOlahragaList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarOlahragaList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarOlahraga(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarOlahragaList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            function renderGambarSeniPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar_seni');
+                const fileCount = document.getElementById('file_count_gambar_seni');
+                if (!previewGrid) return;
+                if (gambarSeniList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarSeniList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarSeni(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarSeniList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            // ===== RENDER PREVIEW GAMBAR GALERI =====
+            function renderGambarGaleriPreview() {
+                const previewGrid = document.getElementById('preview_grid_gambar');
+                const fileCount = document.getElementById('file_count_gambar');
+                if (!previewGrid) return;
+                if (gambarGaleriList.length === 0) {
+                    previewGrid.innerHTML = '';
+                    if (fileCount) {
+                        fileCount.textContent = '0 file dipilih';
+                        fileCount.classList.remove('has-file');
+                    }
+                    return;
+                }
+                let html = '';
+                gambarGaleriList.forEach((file, index) => {
+                    const fileName = file.split('/').pop().split('?')[0] || `Gambar ${index+1}`;
+                    html += `
+                        <div class="preview-item">
+                            <img src="${file}" alt="${fileName}" />
+                            <button type="button" class="remove-btn" onclick="removeGambarGaleri(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                previewGrid.innerHTML = html;
+                if (fileCount) {
+                    fileCount.textContent = `${gambarGaleriList.length} file dipilih`;
+                    fileCount.classList.add('has-file');
+                }
+            }
+
+            // ===== FUNGSI REMOVE =====
+            window.removeDokumen = function(index) {
+                dokumenList.splice(index, 1);
+                renderDokumenPreview();
+            };
+            window.removeDokumenCagar = function(index) {
+                dokumenCagarList.splice(index, 1);
+                renderDokumenCagarPreview();
+            };
+            window.removeGambarManuskrip = function(index) {
+                gambarManuskripList.splice(index, 1);
+                renderGambarManuskripPreview();
+            };
+            window.removeGambarCagar = function(index) {
+                gambarCagarList.splice(index, 1);
+                renderGambarCagarPreview();
+            };
+            window.removeGambarAdat = function(index) {
+                gambarAdatList.splice(index, 1);
+                renderGambarAdatPreview();
+            };
+            window.removeGambarRitus = function(index) {
+                gambarRitusList.splice(index, 1);
+                renderGambarRitusPreview();
+            };
+            window.removeGambarPengetahuan = function(index) {
+                gambarPengetahuanList.splice(index, 1);
+                renderGambarPengetahuanPreview();
+            };
+            window.removeGambarTeknologi = function(index) {
+                gambarTeknologiList.splice(index, 1);
+                renderGambarTeknologiPreview();
+            };
+            window.removeGambarPermainan = function(index) {
+                gambarPermainanList.splice(index, 1);
+                renderGambarPermainanPreview();
+            };
+            window.removeGambarOlahraga = function(index) {
+                gambarOlahragaList.splice(index, 1);
+                renderGambarOlahragaPreview();
+            };
+            window.removeGambarSeni = function(index) {
+                gambarSeniList.splice(index, 1);
+                renderGambarSeniPreview();
+            };
+            window.removeGambarGaleri = function(index) {
+                gambarGaleriList.splice(index, 1);
+                renderGambarGaleriPreview();
+            };
+
+            // ===== RENDER TABLE =====
+            function renderTable(menu) {
+                const config = MENU_CONFIG[menu];
+                if (!config) return;
+                const data = loadData(menu);
+
+                // ===== KHUSUS UNTUK STRUKTUR =====
+                if (menu === 'struktur') {
+                    let headerHtml = `<tr><th>Kepala Bidang</th><th>Cagar Budaya</th><th>Kesenian & Bahasa</th><th>Sejarah & Tradisi</th><th style="width:90px;">Aksi</th></tr>`;
+                    tableHead.innerHTML = headerHtml;
+
+                    if (data.length === 0) {
+                        tableBody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada data struktur.</p></div></td></tr>`;
+                        totalCount.textContent = '0';
+                        return;
+                    }
+
+                    let bodyHtml = '';
+                    data.forEach((item, index) => {
+                        const kepala = item.kepala_bidang_nama || '-';
+                        const cagar = (item.cagar_budaya || []).length;
+                        const kesenian = (item.kesenian_bahasa || []).length;
+                        const sejarah = (item.sejarah_tradisi || []).length;
+
+                        bodyHtml += `<tr data-index="${index}">
+                            <td>${kepala}</td>
+                            <td><span class="file-badge"><i class="fas fa-users"></i> ${cagar} orang</span></td>
+                            <td><span class="file-badge"><i class="fas fa-users"></i> ${kesenian} orang</span></td>
+                            <td><span class="file-badge"><i class="fas fa-users"></i> ${sejarah} orang</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm btn-edit" data-index="${index}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-index="${index}"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-outline btn-sm btn-detail" data-index="${index}"><i class="fas fa-eye"></i></button>
+                            </td>
+                        </tr>`;
+                    });
+                    tableBody.innerHTML = bodyHtml;
+                    totalCount.textContent = data.length;
+
+                    document.querySelectorAll('.btn-edit').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            editData(menu, parseInt(this.dataset.index));
+                        });
+                    });
+                    document.querySelectorAll('.btn-delete').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            if (confirm('Hapus data ini?')) deleteData(menu, parseInt(this.dataset.index));
+                        });
+                    });
+                    document.querySelectorAll('.btn-detail').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const idx = parseInt(this.dataset.index);
+                            const item = loadData(menu)[idx];
+                            if (item) {
+                                const encoded = encodeURIComponent(JSON.stringify(item));
+                                window.open('struktur.html?data=' + encoded, '_blank');
+                            }
+                        });
+                    });
+
+                    return;
+                }
+
+                // ===== RENDER UNTUK MENU LAINNYA =====
+                let headerHtml = '<tr>';
+                config.fields.forEach(f => {
+                    if (!f.disabled) {
+                        let label = f.label;
+                        if (f.key === 'audio') label = 'Audio';
+                        if (f.key === 'dokumen') label = 'Dokumen';
+                        if (f.key === 'dokumen_cagar') label = 'Dokumen';
+                        if (f.key === 'gambar_manuskrip') label = 'Gambar';
+                        if (f.key === 'gambar_cagar') label = 'Gambar';
+                        if (f.key === 'gambar_adat') label = 'Gambar';
+                        if (f.key === 'gambar_ritus') label = 'Gambar';
+                        if (f.key === 'gambar_pengetahuan') label = 'Gambar';
+                        if (f.key === 'gambar_teknologi') label = 'Gambar';
+                        if (f.key === 'gambar_permainan') label = 'Gambar';
+                        if (f.key === 'gambar_olahraga') label = 'Gambar';
+                        if (f.key === 'gambar_seni') label = 'Gambar';
+                        if (f.key === 'gambar') label = 'Gambar';
+                        headerHtml += `<th>${label}</th>`;
+                    }
+                });
+                headerHtml += '<th style="width:90px;">Aksi</th></tr>';
+                tableHead.innerHTML = headerHtml;
+
+                if (data.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="${config.fields.filter(f=>!f.disabled).length + 1}"><div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada data.</p></div></td></tr>`;
+                    totalCount.textContent = '0';
+                    return;
+                }
+
+                let bodyHtml = '';
+                data.forEach((item, index) => {
+                    bodyHtml += '<tr data-index="' + index + '">';
+                    config.fields.forEach(f => {
+                        if (f.disabled) return;
+                        let val = item[f.key] !== undefined && item[f.key] !== '' ? item[f.key] : '-';
+                        if (f.key === 'audio' && val !== '-' && val !== '') {
+                            val = `<span class="file-thumb"><i class="fas fa-headphones" style="color:#D4A853;"></i></span>`;
+                        }
+                        if ((f.key === 'gambar_manuskrip' || f.key === 'gambar_cagar' || f.key === 'gambar_adat' || f.key === 'gambar_ritus' || f.key === 'gambar_pengetahuan' || f.key === 'gambar_teknologi' || f.key === 'gambar_permainan' || f.key === 'gambar_olahraga' || f.key === 'gambar_seni' || f.key === 'gambar') && val !== '-' && val !== '') {
+                            const imgs = Array.isArray(val) ? val : (val ? [val] : []);
+                            val = `<span class="file-thumb"><i class="fas fa-image" style="color:#D4A853;"></i> ${imgs.length}</span>`;
+                        }
+                        if ((f.key === 'dokumen' || f.key === 'dokumen_cagar') && val !== '-' && val !== '') {
+                            const docs = Array.isArray(val) ? val : (val ? [val] : []);
+                            val = `<span class="file-thumb"><i class="fas fa-file-alt" style="color:#D4A853;"></i> ${docs.length}</span>`;
+                        }
+                        if (f.key === 'deskripsi' && val !== '-' && val !== '') {
+                            val = val.length > 30 ? val.substring(0, 30) + '...' : val;
+                        }
+                        if (f.key === 'status_percepatan' && val !== '-' && val !== '') {
+                            const statusMap = {
+                                'Ditetapkan': 'Ditetapkan',
+                                'Dalam Proses': 'Proses',
+                                'Belum Ditetapkan': 'Belum',
+                                'Perlu Perhatian': 'Perhatian',
+                                'Tidak Aktif': ''
+                            };
+                            const cls = statusMap[val] || '';
+                            val = `<span class="badge-status ${cls}">${val}</span>`;
+                        }
+                        bodyHtml += `<td>${val}</td>`;
+                    });
+                    bodyHtml += `<td>
+                        <button class="btn btn-primary btn-sm btn-edit" data-index="${index}"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm btn-delete" data-index="${index}"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-outline btn-sm btn-detail" data-index="${index}"><i class="fas fa-eye"></i></button>
+                    </td>`;
+                    bodyHtml += '</tr>';
+                });
+                tableBody.innerHTML = bodyHtml;
+                totalCount.textContent = data.length;
+
+                // ===== EVENT UNTUK TOMBOL DI TABEL =====
+                document.querySelectorAll('.btn-edit').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        editData(menu, parseInt(this.dataset.index));
+                    });
+                });
+                document.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (confirm('Hapus data ini?')) deleteData(menu, parseInt(this.dataset.index));
+                    });
+                });
+                document.querySelectorAll('.btn-detail').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.dataset.index);
+                        const item = loadData(menu)[idx];
+                        if (item) {
+                            const encoded = encodeURIComponent(JSON.stringify(item));
+                            const detailMap = {
+                                'cagar_budaya': 'detail_cagar_budaya.html',
+                                'manuskrip': 'detail_manuskrip.html',
+                                'adat_istiadat': 'detail_adat_istiadat.html',
+                                'ritus': 'detail_ritus.html',
+                                'pengetahuan_tradisional': 'detail_pengetahuan_tradisional.html',
+                                'teknologi_tradisional': 'detail_teknologi_tradisional.html',
+                                'permainan_rakyat': 'detail_permainan_rakyat.html',
+                                'olahraga_tradisional': 'detail_olahraga_tradisional.html',
+                                'seni': 'detail_seni.html'
+                            };
+                            const page = detailMap[menu] || 'detail_' + menu + '.html';
+                            window.open(page + '?data=' + encoded, '_blank');
+                        }
+                    });
+                });
+                // Klik pada baris juga membuka detail
+                document.querySelectorAll('#tableBody tr').forEach(row => {
+                    row.addEventListener('click', function() {
+                        const idx = parseInt(this.dataset.index);
+                        if (!isNaN(idx)) {
+                            const item = loadData(menu)[idx];
+                            if (item) {
+                                const encoded = encodeURIComponent(JSON.stringify(item));
+                                const detailMap = {
+                                    'cagar_budaya': 'detail_cagar_budaya.html',
+                                    'manuskrip': 'detail_manuskrip.html',
+                                    'adat_istiadat': 'detail_adat_istiadat.html',
+                                    'ritus': 'detail_ritus.html',
+                                    'pengetahuan_tradisional': 'detail_pengetahuan_tradisional.html',
+                                    'teknologi_tradisional': 'detail_teknologi_tradisional.html',
+                                    'permainan_rakyat': 'detail_permainan_rakyat.html',
+                                    'olahraga_tradisional': 'detail_olahraga_tradisional.html',
+                                    'seni': 'detail_seni.html'
+                                };
+                                const page = detailMap[menu] || 'detail_' + menu + '.html';
+                                window.open(page + '?data=' + encoded, '_blank');
+                            }
+                        }
+                    });
+                });
+            }
+
+            // ===== GET FORM VALUES =====
+            function getFormValues(menu) {
+                const config = MENU_CONFIG[menu];
+                const values = {};
+                config.fields.forEach(f => {
+                    if (f.type === 'file') {
+                        if (f.key === 'audio') {
+                            values[f.key] = audioFile || '';
+                        } else if (f.key === 'dokumen') {
+                            values[f.key] = dokumenList.length > 0 ? dokumenList : [];
+                        } else if (f.key === 'dokumen_cagar') {
+                            values[f.key] = dokumenCagarList.length > 0 ? dokumenCagarList : [];
+                        } else if (f.key === 'gambar_manuskrip') {
+                            values[f.key] = gambarManuskripList.length > 0 ? gambarManuskripList : [];
+                        } else if (f.key === 'gambar_cagar') {
+                            values[f.key] = gambarCagarList.length > 0 ? gambarCagarList : [];
+                        } else if (f.key === 'gambar_adat') {
+                            values[f.key] = gambarAdatList.length > 0 ? gambarAdatList : [];
+                        } else if (f.key === 'gambar_ritus') {
+                            values[f.key] = gambarRitusList.length > 0 ? gambarRitusList : [];
+                        } else if (f.key === 'gambar_pengetahuan') {
+                            values[f.key] = gambarPengetahuanList.length > 0 ? gambarPengetahuanList : [];
+                        } else if (f.key === 'gambar_teknologi') {
+                            values[f.key] = gambarTeknologiList.length > 0 ? gambarTeknologiList : [];
+                        } else if (f.key === 'gambar_permainan') {
+                            values[f.key] = gambarPermainanList.length > 0 ? gambarPermainanList : [];
+                        } else if (f.key === 'gambar_olahraga') {
+                            values[f.key] = gambarOlahragaList.length > 0 ? gambarOlahragaList : [];
+                        } else if (f.key === 'gambar_seni') {
+                            values[f.key] = gambarSeniList.length > 0 ? gambarSeniList : [];
+                        } else if (f.key === 'gambar') {
+                            values[f.key] = gambarGaleriList.length > 0 ? gambarGaleriList : [];
+                        } else {
+                            values[f.key] = [];
+                        }
+                    } else {
+                        const el = document.getElementById('field_' + f.key);
+                        if (el) {
+                            values[f.key] = el.value.trim();
+                            if (f.type === 'number') values[f.key] = parseInt(values[f.key]) || 0;
+                        }
+                    }
+                });
+
+                // ===== KHUSUS UNTUK STRUKTUR: ubah textarea menjadi array =====
+                if (menu === 'struktur') {
+                    ['cagar_budaya', 'kesenian_bahasa', 'sejarah_tradisi'].forEach(key => {
+                        const el = document.getElementById('field_' + key);
+                        if (el) {
+                            const raw = el.value.trim();
+                            values[key] = raw ? raw.split('\n').map(s => s.trim()).filter(s => s) : [];
+                        }
+                    });
+                }
+                return values;
+            }
+
+            // ===== SET FORM VALUES =====
+            function setFormValues(menu, data) {
+                const config = MENU_CONFIG[menu];
+                config.fields.forEach(f => {
+                    if (f.type === 'file') {
+                        if (f.key === 'audio') {
+                            audioFile = data[f.key] || '';
+                            const previewDiv = document.getElementById('audio_preview_audio');
+                            const fileCount = document.getElementById('file_count_audio');
+                            if (audioFile) {
+                                if (previewDiv) {
+                                    previewDiv.innerHTML = `<audio controls style="width:100%;"><source src="${audioFile}"></audio>`;
+                                }
+                                if (fileCount) {
+                                    fileCount.textContent = 'Audio terupload';
+                                    fileCount.classList.add('has-file');
+                                }
+                            } else {
+                                if (previewDiv) previewDiv.innerHTML = '';
+                                if (fileCount) {
+                                    fileCount.textContent = 'Belum ada file';
+                                    fileCount.classList.remove('has-file');
+                                }
+                            }
+                        } else if (f.key === 'dokumen') {
+                            dokumenList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderDokumenPreview();
+                        } else if (f.key === 'dokumen_cagar') {
+                            dokumenCagarList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderDokumenCagarPreview();
+                        } else if (f.key === 'gambar_manuskrip') {
+                            gambarManuskripList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarManuskripPreview();
+                        } else if (f.key === 'gambar_cagar') {
+                            gambarCagarList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarCagarPreview();
+                        } else if (f.key === 'gambar_adat') {
+                            gambarAdatList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarAdatPreview();
+                        } else if (f.key === 'gambar_ritus') {
+                            gambarRitusList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarRitusPreview();
+                        } else if (f.key === 'gambar_pengetahuan') {
+                            gambarPengetahuanList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarPengetahuanPreview();
+                        } else if (f.key === 'gambar_teknologi') {
+                            gambarTeknologiList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarTeknologiPreview();
+                        } else if (f.key === 'gambar_permainan') {
+                            gambarPermainanList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarPermainanPreview();
+                        } else if (f.key === 'gambar_olahraga') {
+                            gambarOlahragaList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarOlahragaPreview();
+                        } else if (f.key === 'gambar_seni') {
+                            gambarSeniList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarSeniPreview();
+                        } else if (f.key === 'gambar') {
+                            gambarGaleriList = data[f.key] && Array.isArray(data[f.key]) ? data[f.key] : [];
+                            renderGambarGaleriPreview();
+                        }
+                    } else {
+                        const el = document.getElementById('field_' + f.key);
+                        if (el) { el.value = data[f.key] !== undefined ? data[f.key] : ''; }
+                    }
+                });
+
+                // ===== KHUSUS UNTUK STRUKTUR: ubah array menjadi textarea =====
+                if (menu === 'struktur') {
+                    ['cagar_budaya', 'kesenian_bahasa', 'sejarah_tradisi'].forEach(key => {
+                        const el = document.getElementById('field_' + key);
+                        if (el) {
+                            const arr = data[key] || [];
+                            el.value = arr.join('\n');
+                        }
+                    });
+                }
+            }
+
+            // ===== RESET FORM =====
+            function resetForm(menu) {
+                const config = MENU_CONFIG[menu];
+                config.fields.forEach(f => {
+                    if (f.type === 'file') {
+                        if (f.key === 'audio') {
+                            audioFile = '';
+                            const previewDiv = document.getElementById('audio_preview_audio');
+                            const fileCount = document.getElementById('file_count_audio');
+                            if (previewDiv) previewDiv.innerHTML = '';
+                            if (fileCount) {
+                                fileCount.textContent = 'Belum ada file';
+                                fileCount.classList.remove('has-file');
+                            }
+                            const fileInput = document.getElementById('field_audio');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'dokumen') {
+                            dokumenList = [];
+                            renderDokumenPreview();
+                            const fileInput = document.getElementById('field_dokumen');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'dokumen_cagar') {
+                            dokumenCagarList = [];
+                            renderDokumenCagarPreview();
+                            const fileInput = document.getElementById('field_dokumen_cagar');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_manuskrip') {
+                            gambarManuskripList = [];
+                            renderGambarManuskripPreview();
+                            const fileInput = document.getElementById('field_gambar_manuskrip');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_cagar') {
+                            gambarCagarList = [];
+                            renderGambarCagarPreview();
+                            const fileInput = document.getElementById('field_gambar_cagar');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_adat') {
+                            gambarAdatList = [];
+                            renderGambarAdatPreview();
+                            const fileInput = document.getElementById('field_gambar_adat');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_ritus') {
+                            gambarRitusList = [];
+                            renderGambarRitusPreview();
+                            const fileInput = document.getElementById('field_gambar_ritus');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_pengetahuan') {
+                            gambarPengetahuanList = [];
+                            renderGambarPengetahuanPreview();
+                            const fileInput = document.getElementById('field_gambar_pengetahuan');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_teknologi') {
+                            gambarTeknologiList = [];
+                            renderGambarTeknologiPreview();
+                            const fileInput = document.getElementById('field_gambar_teknologi');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_permainan') {
+                            gambarPermainanList = [];
+                            renderGambarPermainanPreview();
+                            const fileInput = document.getElementById('field_gambar_permainan');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_olahraga') {
+                            gambarOlahragaList = [];
+                            renderGambarOlahragaPreview();
+                            const fileInput = document.getElementById('field_gambar_olahraga');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar_seni') {
+                            gambarSeniList = [];
+                            renderGambarSeniPreview();
+                            const fileInput = document.getElementById('field_gambar_seni');
+                            if (fileInput) fileInput.value = '';
+                        } else if (f.key === 'gambar') {
+                            gambarGaleriList = [];
+                            renderGambarGaleriPreview();
+                            const fileInput = document.getElementById('field_gambar');
+                            if (fileInput) fileInput.value = '';
+                        }
+                    } else {
+                        const el = document.getElementById('field_' + f.key);
+                        if (el) {
+                            if (f.type === 'select' && f.options) el.value = f.options[0] || '';
+                            else el.value = '';
+                        }
+                    }
+                });
+
+                // ===== KHUSUS UNTUK STRUKTUR =====
+                if (menu === 'struktur') {
+                    ['cagar_budaya', 'kesenian_bahasa', 'sejarah_tradisi'].forEach(key => {
+                        const el = document.getElementById('field_' + key);
+                        if (el) el.value = '';
+                    });
+                }
+
+                editIndex = -1;
+                btnSubmit.innerHTML = '<i class="fas fa-save"></i> Simpan';
+                formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Tambah Data';
+                btnCancel.style.display = 'none';
+            }
+
+            // ===== EDIT DATA =====
+            function editData(menu, index) {
+                const data = loadData(menu);
+                const item = data[index];
+                if (!item) return;
+                editIndex = index;
+                setFormValues(menu, item);
+                btnSubmit.innerHTML = '<i class="fas fa-edit"></i> Update';
+                formTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Data';
+                btnCancel.style.display = 'inline-flex';
+                document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // ===== DELETE DATA =====
+            function deleteData(menu, index) {
+                let data = loadData(menu);
+                data.splice(index, 1);
+                saveData(menu, data);
+                renderTable(menu);
+                if (editIndex === index) resetForm(menu);
+            }
+
+            // ===== HANDLE SUBMIT =====
+            function handleSubmit(e) {
+                e.preventDefault();
+                const menu = currentMenu;
+                const config = MENU_CONFIG[menu];
+                let valid = true;
+                config.fields.forEach(f => {
+                    if (f.required && f.type !== 'file') {
+                        const el = document.getElementById('field_' + f.key);
+                        if (el && !el.value.trim()) {
+                            valid = false;
+                            el.style.borderColor = '#EF5350';
+                            setTimeout(() => el.style.borderColor = '', 2000);
+                        }
+                    }
+                });
+                if (!valid) { 
+                    alert('Harap isi semua field wajib (*).'); 
+                    return; 
+                }
+                const values = getFormValues(menu);
+                let data = loadData(menu);
+                if (editIndex === -1) data.push(values);
+                else { data[editIndex] = values; editIndex = -1; }
+                saveData(menu, data);
+                renderTable(menu);
+                resetForm(menu);
+                window.dispatchEvent(new Event('storage'));
+            }
+
+            // ===== DELETE ALL DATA =====
+            function deleteAllData(menu) {
+                if (loadData(menu).length === 0) { alert('Tidak ada data.'); return; }
+                if (confirm('Hapus SEMUA data?')) { 
+                    saveData(menu, []); 
+                    renderTable(menu); 
+                    resetForm(menu);
+                    window.dispatchEvent(new Event('storage'));
+                }
+            }
+
+            // ===== SWITCH MENU =====
+            function switchMenu(menu) {
+                currentMenu = menu;
+                const config = MENU_CONFIG[menu];
+                pageTitle.textContent = config.label;
+                pageSub.textContent = `Kelola data ${config.label.toLowerCase()} di Provinsi Banten`;
+                menuItems.forEach(el => el.classList.toggle('active', el.dataset.menu === menu));
+                renderForm(menu);
+                renderTable(menu);
+                resetForm(menu);
+            }
+
+            // ===== LOGIN =====
+            function doLogin(username, password) {
+                if (username === 'admin' && password === 'admin123') {
+                    loginPage.style.display = 'none';
+                    adminPage.classList.add('active');
+                    loginError.style.display = 'none';
+                    
+                    // Data default Tradisi Lisan
+                    const tlData = loadData('tradisi_lisan');
+                    if (tlData.length === 0) {
+                        saveData('tradisi_lisan', [
+                            { 
+                                kabupaten: 'Kabupaten Lebak', 
+                                nama_objek: 'Pantun Banten', 
+                                nama_tradisi: 'Pantun', 
+                                deskripsi: 'Pantun merupakan salah satu tradisi lisan yang berkembang di Banten.',
+                                keterangan: 'Aktif',
+                                audio: '',
+                                dokumen: []
+                            }
+                        ]);
+                    }
+                    
+                    // Data default Manuskrip
+                    const msData = loadData('manuskrip');
+                    if (msData.length === 0) {
+                        saveData('manuskrip', [
+                            { 
+                                pemilik: 'Koleksi Pribadi H. Maman', 
+                                alamat: 'Kecamatan Lebak, Kabupaten Lebak', 
+                                jumlah: 12, 
+                                deskripsi: 'Koleksi naskah kuno berbahasa Arab dan Sunda.\nCatatan: Beberapa naskah dalam kondisi rapuh dan perlu perawatan khusus.',
+                                gambar_manuskrip: [],
+                                dokumen: []
+                            },
+                            { 
+                                pemilik: 'Perpustakaan Daerah Banten', 
+                                alamat: 'Jalan Raya Serang No. 1, Kota Serang', 
+                                jumlah: 45, 
+                                deskripsi: 'Koleksi manuskrip Banten yang terdiri dari naskah sejarah, sastra, dan keagamaan.',
+                                gambar_manuskrip: [],
+                                dokumen: []
+                            }
+                        ]);
+                    }
+
+                    // Data default Cagar Budaya
+                    const cbData = loadData('cagar_budaya');
+                    if (cbData.length === 0) {
+                        const img1 = createPlaceholderImage('Situs Banten Lama', '#1A3A2A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Masjid Agung Banten', '#2A1A3A', '#E8DDD0');
+                        
+                        saveData('cagar_budaya', [
+                            { 
+                                nama_objek: 'Situs Banten Lama', 
+                                sk: 'SK Menteri No. 123/2020', 
+                                kabupaten_kota: 'Kabupaten Serang', 
+                                provinsi: 'Banten', 
+                                peringkat: 'Provinsi',
+                                status_percepatan: 'Ditetapkan', 
+                                deskripsi: 'Situs Banten Lama merupakan kawasan cagar budaya yang memiliki nilai sejarah tinggi.\nCatatan: Perlu perlindungan dan pemeliharaan rutin.',
+                                gambar_cagar: [img1],
+                                dokumen_cagar: []
+                            },
+                            { 
+                                nama_objek: 'Masjid Agung Banten', 
+                                sk: 'SK Menteri No. 456/2018', 
+                                kabupaten_kota: 'Kota Serang', 
+                                provinsi: 'Banten',
+                                peringkat: 'Nasional', 
+                                status_percepatan: 'Ditetapkan', 
+                                deskripsi: 'Masjid Agung Banten adalah salah satu masjid tertua di Banten yang memiliki nilai sejarah dan arsitektur yang khas.',
+                                gambar_cagar: [img2],
+                                dokumen_cagar: []
+                            }
+                        ]);
+                    }
+
+                    // Data default Adat Istiadat
+                    const adatData = loadData('adat_istiadat');
+                    if (adatData.length === 0) {
+                        const img1 = createPlaceholderImage('Baduy', '#3A2A1A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Seren Taun', '#1A4A2A', '#E8DDD0');
+                        
+                        saveData('adat_istiadat', [
+                            { 
+                                kabupaten: 'Kabupaten Lebak', 
+                                nama_objek: 'Adat Baduy', 
+                                deskripsi: 'Adat istiadat masyarakat Baduy yang masih sangat kental dengan nilai-nilai tradisi dan kearifan lokal.\nCatatan: 99% masih dilakukan oleh Suku Baduy.',
+                                gambar_adat: [img1, img2]
+                            },
+                            { 
+                                kabupaten: 'Kabupaten Serang', 
+                                nama_objek: 'Seren Taun', 
+                                deskripsi: 'Upacara adat Seren Taun merupakan tradisi syukuran panen yang dilakukan oleh masyarakat Banten.',
+                                gambar_adat: [img1]
+                            }
+                        ]);
+                    }
+
+                    // Data default Ritus
+                    const ritusData = loadData('ritus');
+                    if (ritusData.length === 0) {
+                        const img1 = createPlaceholderImage('Upacara Adat', '#4A2A1A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Ritual Tahun', '#1A3A4A', '#E8DDD0');
+                        
+                        saveData('ritus', [
+                            { 
+                                umur: 7, 
+                                bulan: 12, 
+                                kondisi: 'Sehat', 
+                                priangan: 'Upacara Mapag', 
+                                banten: 'Ritual Seren', 
+                                mainan: 'Bambu', 
+                                syair: 'Pantun Ritus', 
+                                deskripsi: 'Ritus ini dilakukan sebagai bentuk syukur dan doa untuk keselamatan masyarakat.\nCatatan: Masih sering dilakukan di beberapa desa.',
+                                gambar_ritus: [img1, img2]
+                            },
+                            { 
+                                umur: 5, 
+                                bulan: 8, 
+                                kondisi: 'Kurang', 
+                                priangan: 'Ritual Padi', 
+                                banten: 'Upacara Panen', 
+                                mainan: 'Wayang', 
+                                syair: 'Dongeng Ritus', 
+                                deskripsi: 'Ritus yang berkaitan dengan siklus pertanian dan panen raya.',
+                                gambar_ritus: [img1]
+                            }
+                        ]);
+                    }
+
+                    // Data default Pengetahuan Tradisional
+                    const pengetahuanData = loadData('pengetahuan_tradisional');
+                    if (pengetahuanData.length === 0) {
+                        const img1 = createPlaceholderImage('Kuliner Banten', '#4A2A1A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Baju Adat', '#1A3A4A', '#E8DDD0');
+                        const img3 = createPlaceholderImage('Obat Tradisional', '#2A4A1A', '#E8DDD0');
+                        
+                        saveData('pengetahuan_tradisional', [
+                            { 
+                                kabupaten: 'Kabupaten Serang', 
+                                nama_pengetahuan: 'Kuliner Tradisional Banten', 
+                                deskripsi: 'Kuliner tradisional Banten seperti Sate Bandeng, Rabeg, dan Angeun Lada masih sangat eksis dan menjadi icon kuliner Banten.\nCatatan: 80% masih eksis dan menjadi daya tarik wisata kuliner.',
+                                gambar_pengetahuan: [img1, img2]
+                            },
+                            { 
+                                kabupaten: 'Kabupaten Lebak', 
+                                nama_pengetahuan: 'Busana Adat Banten', 
+                                deskripsi: 'Busana adat Banten seperti baju adat dan baju upacara perkawinan masih sangat eksis digunakan dalam berbagai upacara adat.',
+                                gambar_pengetahuan: [img3]
+                            }
+                        ]);
+                    }
+
+                    // Data default Teknologi Tradisional
+                    const teknologiData = loadData('teknologi_tradisional');
+                    if (teknologiData.length === 0) {
+                        const img1 = createPlaceholderImage('Arsitektur Betawi', '#4A2A1A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Senjata Tradisional', '#1A3A4A', '#E8DDD0');
+                        const img3 = createPlaceholderImage('Alat Pertanian', '#2A4A1A', '#E8DDD0');
+                        
+                        saveData('teknologi_tradisional', [
+                            { 
+                                no: 1, 
+                                bahasa_sunda: 'Imah Adat', 
+                                bahasa_jawa: 'Omah Adat', 
+                                deskripsi: 'Arsitektur rumah adat Betawi yang masih ditemukan di beberapa wilayah Banten.\nCatatan: 70% masih digunakan, terutama di daerah pedesaan.',
+                                gambar_teknologi: [img1, img2]
+                            },
+                            { 
+                                no: 2, 
+                                bahasa_sunda: 'Kujang', 
+                                bahasa_jawa: 'Keris', 
+                                deskripsi: 'Senjata tradisional yang masih digunakan dalam upacara adat dan sebagai pusaka.',
+                                gambar_teknologi: [img3]
+                            }
+                        ]);
+                    }
+
+                    // Data default Permainan Rakyat
+                    const permainanData = loadData('permainan_rakyat');
+                    if (permainanData.length === 0) {
+                        const img1 = createPlaceholderImage('Congklak', '#4A2A1A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Egrang', '#1A3A4A', '#E8DDD0');
+                        const img3 = createPlaceholderImage('Gasing', '#2A4A1A', '#E8DDD0');
+                        
+                        saveData('permainan_rakyat', [
+                            { 
+                                kabupaten: 'Kabupaten Serang', 
+                                nama_permainan: 'Congklak', 
+                                deskripsi: 'Congklak adalah permainan tradisional yang masih sering dimainkan oleh anak-anak di Banten.\nCatatan: 60% masih sering dimainkan, 35% jarang, 5% punah.',
+                                gambar_permainan: [img1, img2]
+                            },
+                            { 
+                                kabupaten: 'Kabupaten Lebak', 
+                                nama_permainan: 'Egrang', 
+                                deskripsi: 'Egrang adalah permainan tradisional yang menggunakan bambu untuk berjalan tinggi.',
+                                gambar_permainan: [img3]
+                            }
+                        ]);
+                    }
+
+                    // Data default Olahraga Tradisional
+                    const olahragaData = loadData('olahraga_tradisional');
+                    if (olahragaData.length === 0) {
+                        const img1 = createPlaceholderImage('Pencak Silat', '#4A2A1A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Sepak Takraw', '#1A3A4A', '#E8DDD0');
+                        const img3 = createPlaceholderImage('Panahan', '#2A4A1A', '#E8DDD0');
+                        
+                        saveData('olahraga_tradisional', [
+                            { 
+                                kabupaten: 'Kabupaten Serang', 
+                                nama_olahraga: 'Pencak Silat', 
+                                deskripsi: 'Pencak Silat adalah olahraga bela diri tradisional yang masih sering dipertandingkan di Banten.\nCatatan: 60% masih sering dimainkan, 40% sudah jarang.',
+                                gambar_olahraga: [img1, img2]
+                            },
+                            { 
+                                kabupaten: 'Kabupaten Lebak', 
+                                nama_olahraga: 'Sepak Takraw', 
+                                deskripsi: 'Sepak Takraw adalah olahraga tradisional yang menggunakan bola rotan dan dimainkan dengan kaki.',
+                                gambar_olahraga: [img3]
+                            }
+                        ]);
+                    }
+
+                    // Data default Seni
+                    const seniData = loadData('seni');
+                    if (seniData.length === 0) {
+                        const img1 = createPlaceholderImage('Tari Topeng', '#4A2A1A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Wayang Golek', '#1A3A4A', '#E8DDD0');
+                        const img3 = createPlaceholderImage('Angklung', '#2A4A1A', '#E8DDD0');
+                        
+                        saveData('seni', [
+                            { 
+                                nama_lembaga: 'Sanggar Tari Topeng Banten', 
+                                ketua: 'H. Asep Saepudin', 
+                                jenis_seni: 'Seni Tari', 
+                                anggota: 80,
+                                deskripsi: 'Tari Topeng adalah salah satu seni tari tradisional yang berkembang di Banten.\nCatatan: Masih aktif dan sering ditampilkan dalam berbagai acara budaya.',
+                                gambar_seni: [img1, img2],
+                                dokumen: []
+                            },
+                            { 
+                                nama_lembaga: 'Paguyuban Wayang Golek Banten', 
+                                ketua: 'K.H. Maman Suryaman', 
+                                jenis_seni: 'Seni Teater', 
+                                anggota: 45,
+                                deskripsi: 'Wayang Golek adalah seni pertunjukan wayang yang menggunakan boneka kayu dan sangat populer di Banten.',
+                                gambar_seni: [img3],
+                                dokumen: []
+                            }
+                        ]);
+                    }
+
+                    // Data default Struktur
+                    const strukturData = loadData('struktur');
+                    if (strukturData.length === 0) {
+                        saveData('struktur', [
+                            {
+                                kepala_bidang_nama: 'Rohmendi, Spd, M. Par',
+                                kepala_bidang_jabatan: 'Kepala Bidang Kebudayaan',
+                                cagar_budaya: ['Ina Diniah, SE, MM', 'Risdiana, S.Pd', 'Hayaj Mustain, S.Sn', 'Igan Rochayadi, ST'],
+                                kesenian_bahasa: ['Nith - - - - - - - - - - - - - - - - - - - -'],
+                                sejarah_tradisi: ['Opik Salim, SE, M.Si', 'Lihin Bohliah, SE, MM', 'Devy Permana, ST', 'Hovia Rahmi Ruhnani, SE']
+                            }
+                        ]);
+                    }
+
+                    // ===== DATA DEFAULT GALERI =====
+                    
+const galeriData = loadData('galeri');
+                    if (galeriData.length === 0) {
+                        const img1 = createPlaceholderImage('Masjid Agung Banten', '#1A3A2A', '#E8DDD0');
+                        const img2 = createPlaceholderImage('Benteng Speelwijk', '#2A3A1A', '#E8DDD0');
+                        const img3 = createPlaceholderImage('Debus Banten', '#3A2A1A', '#E8DDD0');
+                        const img4 = createPlaceholderImage('Tari Topeng Banten', '#2A1A3A', '#E8DDD0');
+                        const img5 = createPlaceholderImage('Suku Baduy', '#1A2A3A', '#E8DDD0');
+                        const img6 = createPlaceholderImage('Keraton Surosowan', '#3A1A2A', '#E8DDD0');
+
+                        saveData('galeri', [
+                            { tag: 'Situs Sejarah', judul: 'Masjid Agung Banten', deskripsi: 'Masjid bersejarah peninggalan Kesultanan Banten yang dibangun pada tahun 1556 oleh Sultan Maulana Hasanuddin.', gambar: [img1] },
+                            { tag: 'Cagar Budaya', judul: 'Benteng Speelwijk', deskripsi: 'Benteng peninggalan Belanda yang terletak di Banten Lama, dibangun pada abad ke-17 sebagai pusat perdagangan.', gambar: [img2] },
+                            { tag: 'Tradisi & Seni', judul: 'Tradisi Debus Banten', deskripsi: 'Kesenian tradisional Banten yang menggabungkan unsur seni bela diri dan kekebalan tubuh.', gambar: [img3] },
+                            { tag: 'Seni Tari', judul: 'Tari Topeng Banten', deskripsi: 'Tari tradisional yang menggambarkan karakter dan filosofi masyarakat Banten melalui gerakan dan topeng yang khas.', gambar: [img4] },
+                            { tag: 'Masyarakat Adat', judul: 'Suku Baduy Banten', deskripsi: 'Masyarakat adat yang masih menjaga tradisi dan kearifan lokal di Kabupaten Lebak, Banten.', gambar: [img5] },
+                            { tag: 'Situs Sejarah', judul: 'Keraton Surosowan', deskripsi: 'Istana Kesultanan Banten yang menjadi pusat pemerintahan dan kebudayaan pada masa kejayaan Kesultanan Banten.', gambar: [img6] }
+                        ]);
+                    }
+
+                    switchMenu('tradisi_lisan');
+                    return true;
+                } else {
+                    loginError.style.display = 'block';
+                    return false;
+                }
+            }
+
+            // ===== LOGOUT =====
+            function doLogout() {
+                adminPage.classList.remove('active');
+                loginPage.style.display = 'block';
+                loginError.style.display = 'none';
+                document.getElementById('username').value = 'admin';
+                document.getElementById('password').value = 'admin123';
+            }
+
+            // ===== EVENT LISTENERS =====
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                doLogin(document.getElementById('username').value.trim(), document.getElementById('password').value.trim());
+            });
+
+            logoutBtn.addEventListener('click', doLogout);
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const menu = this.dataset.menu;
+                    if (menu) switchMenu(menu);
+                });
+            });
+
+            dataForm.addEventListener('submit', handleSubmit);
+            btnCancel.addEventListener('click', function() { resetForm(currentMenu); });
+            btnDeleteAll.addEventListener('click', function() { deleteAllData(currentMenu); });
+
+            window.addEventListener('storage', function(e) {
+                if (e.key && e.key.startsWith('admin_')) {
+                    const menu = e.key.replace('admin_', '');
+                    if (menu === currentMenu) renderTable(menu);
+                }
+            });
+
+            console.log('%c🎤 Admin Dashboard', 'font-size:20px;font-weight:bold;color:#B8893A;');
+            console.log('%c✅ Login: admin / admin123', 'font-size:14px;color:#2E7D32;');
+            console.log('%c🖼️ Menu GALERI telah ditambahkan!', 'font-size:14px;color:#D4A853;');
+            console.log('%c✅ Admin siap digunakan!', 'font-size:14px;color:#2E7D32;');
+        });
+    </script>
+</body>
+</html>
