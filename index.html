@@ -1,0 +1,3448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1A1A1A" />
+  <title>Budaya Nusantara · Dashboard Banten 2026</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js">
+  </script>
+
+  <style>
+    /* ========== ROOT ========== */
+    :root {
+      --cream: #1A1A1A;
+      --cream2: #242424;
+      --cream3: #2E2E2E;
+      --white: #1E1E1E;
+      --brown-deep: #E8DDD0;
+      --brown-soft: #D4C5B5;
+      --gold: #B8893A;
+      --gold-light: #D4A853;
+      --gold-pale: #E8D5B5;
+      --slate: #D0D0D0;
+      --slate-soft: #A0A0A0;
+      --slate-light: #707070;
+      --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.4);
+      --shadow-medium: 0 8px 40px rgba(0, 0, 0, 0.5);
+      --shadow-gold: 0 8px 32px rgba(184, 137, 58, 0.25);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      background-image: url('sunset.jpeg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      color: var(--brown-deep);
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    .body-overlay {
+      background: transparent;
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--cream2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold);
+      border-radius: 10px;
+    }
+
+    /* ========== LOADER ========== */
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      gap: 20px;
+    }
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loader-logo {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .loader-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--cream3);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      animation: loaderFill 1.8s ease forwards;
+    }
+    @keyframes loaderFill {
+      100% {
+        width: 100%;
+      }
+    }
+
+    /* ========== NAVBAR ========== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 0;
+      transition: all var(--transition);
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      padding: 10px 0;
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+      transition: color var(--transition);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+    .navbar.scrolled .navbar-brand {
+      color: #fff;
+      text-shadow: none;
+    }
+
+    .navbar-brand .brand-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      box-shadow: var(--shadow-gold);
+    }
+
+    .navbar-brand .brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .navbar-brand .brand-text span {
+      display: block;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 0.6rem;
+      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .navbar.scrolled .navbar-brand .brand-text span {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .navbar-links>li>a {
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #ffffff;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+    .navbar-links>li>a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--gold-light);
+    }
+    .navbar.scrolled .navbar-links>li>a {
+      color: #fff;
+      text-shadow: none;
+    }
+    .navbar.scrolled .navbar-links>li>a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+
+    .navbar-links>li>a.buku-link {
+      background: rgba(184, 137, 58, 0.25);
+      border: 1px solid rgba(184, 137, 58, 0.3);
+      color: #fff;
+    }
+    .navbar-links>li>a.buku-link:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(184, 137, 58, 0.3);
+    }
+    .navbar.scrolled .navbar-links>li>a.buku-link {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .navbar.scrolled .navbar-links>li>a.buku-link:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .has-drop {
+      position: relative;
+    }
+    .has-drop .navbar-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 220px;
+      background: rgba(13, 13, 13, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-medium);
+      padding: 6px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all 0.25s ease;
+      list-style: none;
+      border: 1px solid rgba(184, 137, 58, 0.1);
+    }
+    .has-drop.open .navbar-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .has-drop .navbar-dropdown li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.15s ease;
+    }
+    .has-drop .navbar-dropdown li a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+    .has-drop .navbar-dropdown li a.active {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-more {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: var(--font-sans);
+      backdrop-filter: blur(4px);
+    }
+    .btn-more:hover {
+      background: rgba(184, 137, 58, 0.2);
+      border-color: var(--gold);
+    }
+    .navbar.scrolled .btn-more {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-more {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-more-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: rgba(13, 13, 13, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(184, 137, 58, 0.1);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-medium);
+      min-width: 200px;
+      padding: 6px;
+      z-index: 999;
+    }
+    .dropdown-more-content.open {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+    .dropdown-more-content a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.15s ease;
+    }
+    .dropdown-more-content a i {
+      color: var(--gold-light);
+      width: 18px;
+      text-align: center;
+    }
+    .dropdown-more-content a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2.5px;
+      background: #fff;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+    .navbar.scrolled .hamburger span {
+      background: #fff;
+    }
+
+    .navbar-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      height: 100vh;
+      background: rgba(13, 13, 13, 0.97);
+      backdrop-filter: blur(16px);
+      padding: 80px 24px 30px;
+      overflow-y: auto;
+      transition: right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 999;
+      list-style: none;
+    }
+    .navbar-drawer.open {
+      right: 0;
+    }
+    .navbar-drawer ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .navbar-drawer .drawer-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 700;
+      padding: 12px 0 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .navbar-drawer a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.15s ease;
+    }
+    .navbar-drawer a:hover {
+      background: rgba(184, 137, 58, 0.15);
+      color: var(--gold-light);
+    }
+    .navbar-drawer a i {
+      width: 20px;
+      color: var(--gold-light);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 60px;
+      overflow: hidden;
+      perspective: 1200px;
+    }
+
+    /* ===== BACKGROUND BERGERAK (PARALLAX + ZOOM) ===== */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Masjid_Agung_Banten.jpg/1280px-Masjid_Agung_Banten.jpg');
+      background-size: 110% 110%;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      z-index: 0;
+      /* ANIMASI ZOOM OTTOMATIS */
+      animation: heroZoom 20s ease-in-out infinite alternate;
+      transform-origin: center;
+      /* EFEK PARALLAX SAAT SCROLL */
+      will-change: transform;
+      transition: transform 0.1s ease-out;
+    }
+
+    @keyframes heroZoom {
+      0% {
+        transform: scale(1) translateY(0px);
+      }
+      50% {
+        transform: scale(1.05) translateY(-10px);
+      }
+      100% {
+        transform: scale(1.1) translateY(-20px);
+      }
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      text-align: center;
+      color: #fff;
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+      will-change: transform;
+    }
+
+    /* Efek 3D tilt pada hero-content */
+    .hero-content.tilt-effect {
+      transform: rotateX(var(--tiltX, 0deg)) rotateY(var(--tiltY, 0deg)) translateZ(10px);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 20px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+    .hero-badge i {
+      color: var(--gold-light);
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 8vw, 5.2rem);
+      font-weight: 800;
+      line-height: 1.08;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 32px;
+      color: rgba(255, 255, 255, 0.90);
+      line-height: 1.8;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: var(--font-sans);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+    }
+
+    /* ===== RIPPLE EFFECT ===== */
+    .btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: scale(0);
+      animation: rippleAnim 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes rippleAnim {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* ===== TOMBOL KLIK ANIMASI (scale) ===== */
+    .btn:active:not(.no-scale) {
+      transform: scale(0.92);
+      transition-duration: 0.1s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff;
+      box-shadow: var(--shadow-gold);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(184, 137, 58, 0.45);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.20);
+      backdrop-filter: blur(4px);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.20);
+      transform: translateY(-3px) scale(1.02);
+      border-color: var(--gold-light);
+    }
+
+    .hero-stats {
+      position: relative;
+      z-index: 2;
+      margin-top: 50px;
+      width: 150%;
+      max-width: 600px;
+    }
+    .hero-stats-inner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      background: rgba(0, 0, 0, 0.30);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat .stat-number {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      line-height: 1.2;
+    }
+    .hero-stat .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+    }
+
+    /* ========== SECTION ========== */
+    .section {
+      padding: 64px 0;
+      position: relative;
+    }
+    .section-alt {
+      background: rgba(30, 30, 30, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 40px;
+      gap: 16px;
+    }
+    .section-header-center {
+      justify-content: center;
+      text-align: center;
+    }
+    .section-eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--brown-deep);
+    }
+    .section-title .highlight {
+      color: var(--gold);
+      font-style: italic;
+    }
+    .section-sub {
+      color: var(--slate-soft);
+      font-size: 1rem;
+      max-width: 500px;
+      margin-top: 8px;
+    }
+
+    /* ========== FEATURED STATS (SLIDER) ========== */
+    .featured-stat {
+      text-align: center;
+      padding: 24px 16px;
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius);
+      border: 1px solid rgba(184, 137, 58, 0.1);
+      transition: all var(--transition);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      display: block;
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+
+    /* Efek 3D saat hover pada kartu */
+    .featured-stat:hover {
+      transform: translateY(-6px) rotateX(2deg) rotateY(4deg) scale(1.02);
+      box-shadow: var(--shadow-medium);
+      border-color: rgba(184, 137, 58, 0.2);
+    }
+
+    .featured-stat::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .featured-stat:hover::before {
+      opacity: 1;
+    }
+
+    .featured-stat .f-icon {
+      font-size: 2rem;
+      color: var(--gold-pale);
+      margin-bottom: 10px;
+    }
+    .featured-stat .f-number {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1.2;
+    }
+    .featured-stat .f-label {
+      font-size: 0.78rem;
+      color: var(--slate-soft);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* ========== SLIDER OPK ========== */
+    .opk-slider-wrapper {
+      position: relative;
+      overflow: hidden;
+      padding: 0 40px;
+    }
+    .opk-slider-container {
+      display: flex;
+      transition: transform 0.5s ease;
+      gap: 0;
+    }
+    .opk-slide {
+      flex: 0 0 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      padding: 4px 0;
+    }
+    .slider-btn-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(184, 137, 58, 0.2);
+      border: 1px solid rgba(184, 137, 58, 0.3);
+      color: #D4A853;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      backdrop-filter: blur(4px);
+    }
+    .slider-btn-nav:hover {
+      background: rgba(184, 137, 58, 0.4);
+      border-color: #B8893A;
+    }
+    .slider-btn-nav:active {
+      transform: translateY(-50%) scale(0.9);
+    }
+    .slider-btn-prev {
+      left: 0;
+    }
+    .slider-btn-next {
+      right: 0;
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .slider-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+    }
+    .slider-dot.active {
+      background: #D4A853;
+      transform: scale(1.2);
+    }
+    .slider-dot:hover {
+      background: rgba(184, 137, 58, 0.5);
+    }
+
+    /* ========== PROFILE ========== */
+    .section-profile {
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+    }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .profile-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 16px;
+      border-radius: 9999px;
+      background: var(--gold-pale);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--brown-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .profile-text p {
+      color: var(--slate);
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+    .info-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .info-chip {
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(184, 137, 58, 0.1);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--brown-soft);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .info-chip i {
+      color: var(--gold);
+    }
+
+    .profile-visual {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+    }
+    .profile-visual-main {
+      grid-row: 1 / 3;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-medium);
+    }
+    .profile-visual-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 300px;
+    }
+    .profile-visual-sm {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+    .profile-visual-sm img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    /* ========== OPK GRID ========== */
+    .opk-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .opk-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 12px;
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(184, 137, 58, 0.08);
+      box-shadow: var(--shadow-soft);
+      transition: all var(--transition);
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      min-height: 120px;
+      transform-style: preserve-3d;
+      perspective: 600px;
+    }
+
+    /* Efek 3D pada kartu OPK */
+    .opk-card:hover {
+      transform: translateY(-6px) rotateX(2deg) rotateY(4deg) scale(1.03);
+      box-shadow: var(--shadow-medium);
+      border-color: var(--gold);
+    }
+
+    .opk-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      opacity: 0;
+      transition: opacity var(--transition);
+      border-radius: inherit;
+    }
+    .opk-card:hover::after {
+      opacity: 0.06;
+    }
+
+    .opk-card .opk-icon {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .opk-card .opk-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--brown-deep);
+      position: relative;
+      z-index: 1;
+    }
+    .opk-card .opk-badge {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--slate-light);
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ========== SARANA ========== */
+    .sarana-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      padding: 32px 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(184, 137, 58, 0.06);
+    }
+    .sarana-intro-text h3 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--brown-deep);
+    }
+    .sarana-intro-text p {
+      color: var(--slate);
+      font-size: 0.9rem;
+    }
+    .sarana-intro-text .note {
+      background: rgba(184, 137, 58, 0.06);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--gold);
+      font-weight: 500;
+      color: var(--brown-soft);
+    }
+
+    .sarana-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+    .sbar .sbar-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 4px;
+    }
+    .sbar .sbar-name i {
+      color: var(--gold);
+      margin-right: 6px;
+    }
+    .sbar-track {
+      width: 100%;
+      height: 8px;
+      background: var(--cream3);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .sbar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 10px;
+      transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .sbar-fill.gov {
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    }
+    .sbar-fill.masy {
+      background: linear-gradient(90deg, #4A7C5E, #6BAF8D);
+    }
+
+    .sarana-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .sarana-card {
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      transition: all var(--transition);
+      border: 1px solid rgba(184, 137, 58, 0.06);
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+    .sarana-card:hover {
+      transform: translateY(-6px) rotateX(1deg) rotateY(3deg) scale(1.01);
+      box-shadow: var(--shadow-medium);
+      border-color: rgba(184, 137, 58, 0.15);
+    }
+    .sarana-card-img-wrap {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+    .sarana-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .sarana-card:hover .sarana-card-img {
+      transform: scale(1.03);
+    }
+    .sarana-card-img-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    }
+    .sarana-card-body {
+      padding: 20px 22px 24px;
+    }
+    .sarana-card-eyebrow {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .sarana-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 4px 0 8px;
+      color: var(--brown-deep);
+    }
+    .sarana-card-desc {
+      font-size: 0.85rem;
+      color: var(--slate-soft);
+      line-height: 1.6;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .badge-gold {
+      background: var(--gold-pale);
+      color: var(--brown-soft);
+    }
+    .badge-green {
+      background: #1E3A2F;
+      color: #8BC34A;
+    }
+    .badge-warning {
+      background: #3E2A00;
+      color: #FFD54F;
+    }
+
+    /* ========== CHARTS ========== */
+    .chart-container {
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid rgba(184, 137, 58, 0.06);
+      box-shadow: var(--shadow-soft);
+      transition: all var(--transition);
+    }
+    .chart-container:hover {
+      box-shadow: var(--shadow-medium);
+      transform: translateY(-2px);
+    }
+    .chart-container .chart-title {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--brown-deep);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .chart-wrapper {
+      position: relative;
+      height: 300px;
+    }
+
+    /* ========== SUMBER DATA ========== */
+    .sumber-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .sumber-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 22px;
+      background: rgba(30, 30, 30, 0.80);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(184, 137, 58, 0.06);
+      box-shadow: var(--shadow-soft);
+      transition: all var(--transition);
+      transform-style: preserve-3d;
+    }
+    .sumber-card:hover {
+      transform: translateY(-4px) rotateX(1deg) rotateY(2deg);
+      box-shadow: var(--shadow-medium);
+      border-color: rgba(184, 137, 58, 0.12);
+    }
+    .sumber-card .sumber-icon {
+      font-size: 1.6rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      width: 48px;
+      text-align: center;
+    }
+    .sumber-card .sumber-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--brown-deep);
+    }
+    .sumber-card .sumber-desc {
+      font-size: 0.82rem;
+      color: var(--slate-soft);
+      line-height: 1.6;
+    }
+
+    /* ========== INFO BUDAYA ========== */
+    .section-info-budaya {
+      background: linear-gradient(135deg, #0D1A12 0%, #1E3A2F 100%);
+      padding: 72px 0;
+      color: #fff;
+    }
+    .section-info-budaya .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .section-info-budaya .info-item {
+      text-align: center;
+      padding: 28px 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius);
+      backdrop-filter: blur(4px);
+      transition: all var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transform-style: preserve-3d;
+    }
+    .section-info-budaya .info-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-4px) rotateX(1deg) rotateY(2deg);
+    }
+    .section-info-budaya .info-item .info-number {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      line-height: 1.2;
+    }
+    .section-info-budaya .info-item .info-label {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 4px;
+    }
+    .section-info-budaya .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 9999px;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-gold);
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      position: relative;
+      overflow: hidden;
+    }
+    .section-info-budaya .btn-cta:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(184, 137, 58, 0.45);
+    }
+    .section-info-budaya .btn-cta:active {
+      transform: scale(0.92);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      background: rgba(13, 13, 13, 0.95);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 48px 0 24px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .footer-brand .footer-logo {
+      font-size: 2rem;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+    .footer-brand h3 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      max-width: 300px;
+    }
+    .footer-col h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer-col ul li a {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-col ul li a:hover {
+      color: var(--gold-light);
+    }
+    .footer-col ul li a i {
+      width: 16px;
+      font-size: 0.7rem;
+      color: var(--gold);
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      gap: 12px;
+    }
+    .footer-bottom .dot {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin: 0 8px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+    .footer-social a {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 1.1rem;
+      transition: color 0.2s ease;
+    }
+    .footer-social a:hover {
+      color: var(--gold-light);
+    }
+
+    /* ========== BACK TO TOP ========== */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #fff;
+      border: none;
+      box-shadow: var(--shadow-gold);
+      cursor: pointer;
+      font-size: 1.1rem;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    #backToTop.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    #backToTop:hover {
+      transform: scale(1.08) translateY(-2px);
+    }
+    #backToTop:active {
+      transform: scale(0.9);
+    }
+
+    /* ================================================================
+       ANIMASI SCROLL 3D (AOS kustom)
+       ================================================================ */
+    .aos-3d {
+      opacity: 0;
+      transform: perspective(800px) rotateY(15deg) rotateX(5deg) translateZ(-50px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, opacity;
+    }
+    .aos-3d.aos-animate {
+      opacity: 1;
+      transform: perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px);
+    }
+
+    .aos-3d-left {
+      opacity: 0;
+      transform: perspective(800px) rotateY(-20deg) translateX(-60px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .aos-3d-left.aos-animate {
+      opacity: 1;
+      transform: perspective(800px) rotateY(0deg) translateX(0);
+    }
+
+    .aos-3d-right {
+      opacity: 0;
+      transform: perspective(800px) rotateY(20deg) translateX(60px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .aos-3d-right.aos-animate {
+      opacity: 1;
+      transform: perspective(800px) rotateY(0deg) translateX(0);
+    }
+
+    .aos-3d-up {
+      opacity: 0;
+      transform: perspective(800px) rotateX(15deg) translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .aos-3d-up.aos-animate {
+      opacity: 1;
+      transform: perspective(800px) rotateX(0deg) translateY(0);
+    }
+
+    /* ================================================================
+       RESPONSIVE
+       ================================================================ */
+    @media (max-width: 1024px) {
+      .opk-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    @media (max-width: 992px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .profile-visual {
+        grid-template-columns: 1fr 1fr;
+      }
+      .profile-visual-main {
+        grid-row: auto;
+      }
+      .sarana-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+      .sumber-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .hero-stats-inner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 16px;
+      }
+      .hero-stat .stat-number {
+        font-size: 1.6rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .navbar-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .hero-title {
+        font-size: clamp(2.2rem, 6vw, 3.2rem);
+      }
+      .opk-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .sarana-intro {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+      .sarana-cards {
+        grid-template-columns: 1fr;
+      }
+      .sumber-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-info-budaya .info-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+      .chart-wrapper {
+        height: 220px;
+      }
+      .section {
+        padding: 40px 0;
+      }
+      .btn-more span {
+        display: none;
+      }
+      .btn-more {
+        padding: 6px 12px;
+      }
+    }
+    @media (max-width: 480px) {
+      .opk-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .opk-card {
+        padding: 14px 10px;
+        min-height: 80px;
+      }
+      .opk-card .opk-icon {
+        font-size: 1.5rem;
+      }
+      .opk-card .opk-label {
+        font-size: 0.65rem;
+      }
+      .navbar-brand .brand-text {
+        font-size: 0.9rem;
+      }
+      .navbar-brand .brand-text span {
+        font-size: 0.55rem;
+      }
+      .hero-cta .btn {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+      }
+      .chart-container .chart-wrapper {
+        height: 180px;
+      }
+    /* ===== SLIDER SARANA - KOTAK ===== */
+.sarana-card-square {
+  display: flex;
+  flex-direction: column;
+  background: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(4px);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(184, 137, 58, 0.08);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s ease;
+  cursor: pointer;
+  height: 100%;
+  min-height: 320px;
+}
+
+.sarana-card-square:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-medium);
+  border-color: rgba(184, 137, 58, 0.2);
+}
+
+.sarana-card-square .sarana-card-img-wrap {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sarana-card-square .sarana-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.sarana-card-square:hover .sarana-card-img {
+  transform: scale(1.05);
+}
+
+.sarana-card-square .sarana-card-img-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.sarana-card-square .sarana-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px 18px;
+}
+
+.sarana-card-square .sarana-card-eyebrow {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.sarana-card-square .sarana-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 2px 0 4px;
+  color: var(--brown-deep);
+}
+
+.sarana-card-square .sarana-card-desc {
+  font-size: 0.8rem;
+  color: var(--slate-soft);
+  line-height: 1.5;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sarana-card-square .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.6rem;
+  font-weight: 600;
+}
+
+.sarana-card-square .badge-gold {
+  background: rgba(184, 137, 58, 0.15);
+  color: var(--gold-light);
+}
+
+.sarana-card-square .badge-green {
+  background: rgba(46, 125, 50, 0.15);
+  color: #66BB6A;
+}
+
+.sarana-card-square .badge-warning {
+  background: rgba(255, 152, 0, 0.15);
+  color: #FFB74D;
+}
+
+@media (max-width: 992px) {
+  .sarana-card-square .sarana-card-img-wrap {
+    height: 160px;
+  }
+  .sarana-card-square {
+    min-height: 270px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sarana-card-square .sarana-card-img-wrap {
+    height: 140px;
+  }
+  .sarana-card-square {
+    min-height: 230px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sarana-card-square .sarana-card-img-wrap {
+    height: 110px;
+  }
+  .sarana-card-square {
+    min-height: 190px;
+  }
+  .sarana-card-square .sarana-card-body {
+    padding: 10px 12px 12px;
+  }
+  .sarana-card-square .sarana-card-title {
+    font-size: 0.85rem;
+  }
+  .sarana-card-square .sarana-card-desc {
+    font-size: 0.7rem;
+    -webkit-line-clamp: 1;
+  }
+  .sarana-card-square .badge {
+    font-size: 0.55rem;
+    padding: 2px 6px;
+  }
+}
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ========== LOADER ========== -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-logo">
+      <i class="fas fa-archway"></i>
+      Budaya Banten
+    </div>
+    <div class="loader-bar">
+      <div class="loader-bar-fill"></div>
+    </div>
+    <p style="color:var(--slate-soft);margin-top:12px;font-size:0.85rem;">
+      Menyiapkan data kebudayaan Banten...
+    </p>
+  </div>
+
+  <!-- ========== OVERLAY ========== -->
+  <div class="body-overlay">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar" id="navbar">
+      <div class="navbar-inner">
+
+        <a class="navbar-brand" href="index.html">
+          <div class="brand-icon">
+            <img src="budayabanten.jpeg" alt="Logo Budaya Banten">
+          </div>
+          <div class="brand-text">
+            Budaya Banten
+            <span>Provinsi Banten · 2026</span>
+          </div>
+        </a>
+
+        <ul class="navbar-links">
+          <li><a href="#profil"><i class="fas fa-map-marked-alt"></i> Profil</a></li>
+          <li class="has-drop">
+            <a href=""><i class="fas fa-th-large"></i> OPK</a>
+            <ul class="navbar-dropdown">
+              <li><a href="tradisi_lisan.html"><i class="fas fa-microphone-alt"></i> Tradisi Lisan</a></li>
+              <li><a href="manuskrip.html"><i class="fas fa-scroll"></i> Manuskrip</a></li>
+              <li><a href="adat_istiadat.html"><i class="fas fa-hand-holding-heart"></i> Adat Istiadat</a></li>
+              <li><a href="ritus.html"><i class="fas fa-fire"></i> Ritus</a></li>
+              <li><a href="pengetahuan_tradisional.html"><i class="fas fa-tree"></i> Pengetahuan Tradisional</a></li>
+              <li><a href="teknologi_tradisional.html"><i class="fas fa-cogs"></i> Teknologi Tradisional</a></li>
+              <li><a href="seni.html"><i class="fas fa-palette"></i> Seni</a></li>
+              <li><a href="bahasa.html"><i class="fas fa-language"></i> Bahasa</a></li>
+              <li><a href="permainan_rakyat.html"><i class="fas fa-dice"></i> Permainan Rakyat</a></li>
+              <li><a href="olahraga_tradisional.html"><i class="fas fa-running"></i> Olahraga Tradisional</a></li>
+              <li><a href="cagar_budaya.html"><i class="fas fa-landmark"></i> Cagar Budaya</a></li>
+            </ul>
+          </li>
+          <li><a href="#sumber"><i class="fas fa-book-open"></i> Sumber Data</a></li>
+          <li><a href="buku.html" class="buku-link"><i class="fas fa-book"></i> Buku</a></li>
+        </ul>
+
+        <div class="navbar-actions">
+          <div class="dropdown-more">
+            <button class="btn-more" id="btnMore">
+              <i class="fas fa-ellipsis-v"></i> <span>Lainnya</span>
+            </button>
+            <div class="dropdown-more-content" id="dropdownMore">
+              <a href="tugas_bidang_kebudayaan.html"><i class="fas fa-tasks"></i> Tugas Kebudayaan</a>
+              <a href="struktur.html"><i class="fas fa-chart-pie"></i> Struktur</a>
+              <a href="galeri.html"><i class="fas fa-images"></i> Galeri</a>
+              <a href="kontak.html"><i class="fas fa-envelope"></i> Kontak</a>
+            </div>
+          </div>
+
+          <input type="file" id="bgInput" accept="image/*" style="display:none;">
+
+          <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- ========== DRAWER ========== -->
+    <nav class="navbar-drawer" id="navDrawer">
+      <ul>
+        <li class="drawer-label">Navigasi</li>
+        <li><a href="#profil" class="drawer-link"><i class="fas fa-map-marked-alt"></i> Profil Banten</a></li>
+        <li><a href="#opk" class="drawer-link"><i class="fas fa-th-large"></i> OPK</a></li>
+        <li><a href="#sumber" class="drawer-link"><i class="fas fa-book-open"></i> Sumber Data</a></li>
+        <li><a href="buku.html" class="drawer-link" style="background:rgba(184,137,58,0.15);border-radius:10px;"><i class="fas fa-book"></i> Buku</a></li>
+
+        <li class="drawer-label">Kategori OPK</li>
+        <li><a href="tradisi_lisan.html"><i class="fas fa-microphone-alt"></i> Tradisi Lisan</a></li>
+        <li><a href="manuskrip.html"><i class="fas fa-scroll"></i> Manuskrip</a></li>
+        <li><a href="adat_istiadat.html"><i class="fas fa-hand-holding-heart"></i> Adat Istiadat</a></li>
+        <li><a href="ritus.html"><i class="fas fa-fire"></i> Ritus</a></li>
+        <li><a href="pengetahuan_tradisional.html"><i class="fas fa-tree"></i> Pengetahuan Tradisional</a></li>
+        <li><a href="teknologi_tradisional.html"><i class="fas fa-cogs"></i> Teknologi Tradisional</a></li>
+        <li><a href="seni.html"><i class="fas fa-palette"></i> Seni</a></li>
+        <li><a href="bahasa.html"><i class="fas fa-language"></i> Bahasa</a></li>
+        <li><a href="permainan_rakyat.html"><i class="fas fa-dice"></i> Permainan Rakyat</a></li>
+        <li><a href="olahraga_tradisional.html"><i class="fas fa-running"></i> Olahraga Tradisional</a></li>
+        <li><a href="cagar_budaya.html"><i class="fas fa-landmark"></i> Cagar Budaya</a></li>
+      </ul>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="home">
+      <!-- Background bergerak (parallax + zoom) -->
+      <div class="hero-bg" id="heroBg"></div>
+
+      <div class="hero-content" id="heroContent">
+        <div class="hero-badge">
+          <i class="fas fa-star"></i> Data Kebudayaan
+        </div>
+        <h1 class="hero-title">
+          Data<br />
+          budaya<em>Banten</em>
+        </h1>
+        <p class="hero-desc">
+          Gambaran lengkap fasilitas kebudayaan Provinsi Banten berdasarkan 10 OPK
+          Objek Pemajuan Kebudayaan (OPK) dalam sistem aplikasi APIK.
+        </p>
+        <div class="hero-cta">
+          <a href="admin.html" class="btn btn-primary" id="btnJelajahi">
+            <i class="fas fa-compass"></i> Jelajahi Data
+          </a>
+          <a href="#profil" class="btn btn-outline" id="btnProfil">
+            <i class="fas fa-book-open"></i> Profil Wilayah
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stats-inner">
+          <div class="hero-stat">
+            <div class="stat-number" data-target="10">10</div>
+            <div class="stat-label"> OPK+Cagar Budaya</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-number" data-target="8">8</div>
+            <div class="stat-label">Kab / Kota</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-number" data-target="2026">2026</div>
+            <div class="stat-label">Tahun Data</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SLIDER OPK ========== -->
+    <section class="section" style="padding-top:20px;background:transparent;">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <div data-aos="fade-up">
+            <div class="section-eyebrow">Objek Pemajuan Kebudayaan</div>
+            <h2 class="section-title">11 <span class="highlight">OPK</span> Banten</h2>
+            <p class="section-sub">Geser untuk melihat semua kategori. Klik kartu untuk melihat detail data.</p>
+          </div>
+        </div>
+
+        <div class="opk-slider-wrapper" data-aos="fade-up">
+          <button class="slider-btn-nav slider-btn-prev" id="opkPrev"><i class="fas fa-chevron-left"></i></button>
+
+          <div class="opk-slider-container" id="opkSlider">
+            <!-- SLIDE 1: 4 OPK pertama -->
+            <div class="opk-slide">
+              <a href="tradisi_lisan.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-microphone-alt"></i></div>
+                <div class="f-number" id="count_tradisi_lisan">0</div>
+                <div class="f-label">Tradisi Lisan</div>
+              </a>
+              <a href="manuskrip.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-scroll"></i></div>
+                <div class="f-number" id="count_manuskrip">0</div>
+                <div class="f-label">Manuskrip</div>
+              </a>
+              <a href="adat_istiadat.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                <div class="f-number" id="count_adat_istiadat">0</div>
+                <div class="f-label">Adat Istiadat</div>
+              </a>
+              <a href="ritus.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-fire"></i></div>
+                <div class="f-number" id="count_ritus">0</div>
+                <div class="f-label">Ritus</div>
+              </a>
+            </div>
+
+            <!-- SLIDE 2: 4 OPK berikutnya -->
+            <div class="opk-slide">
+              <a href="pengetahuan_tradisional.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-tree"></i></div>
+                <div class="f-number" id="count_pengetahuan_tradisional">0</div>
+                <div class="f-label">Pengetahuan Tradisional</div>
+              </a>
+              <a href="teknologi_tradisional.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-cogs"></i></div>
+                <div class="f-number" id="count_teknologi_tradisional">0</div>
+                <div class="f-label">Teknologi Tradisional</div>
+              </a>
+              <a href="seni.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-palette"></i></div>
+                <div class="f-number" id="count_seni">0</div>
+                <div class="f-label">Seni</div>
+              </a>
+              <a href="bahasa.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-language"></i></div>
+                <div class="f-number" id="count_bahasa">0</div>
+                <div class="f-label">Bahasa</div>
+              </a>
+            </div>
+
+            <!-- SLIDE 3: 3 OPK sisanya (Cagar Budaya + 2 lainnya) -->
+            <div class="opk-slide">
+              <a href="permainan_rakyat.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-dice"></i></div>
+                <div class="f-number" id="count_permainan_rakyat">0</div>
+                <div class="f-label">Permainan Rakyat</div>
+              </a>
+              <a href="olahraga_tradisional.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-running"></i></div>
+                <div class="f-number" id="count_olahraga_tradisional">0</div>
+                <div class="f-label">Olahraga Tradisional</div>
+              </a>
+              <a href="cagar_budaya.html" class="featured-stat">
+                <div class="f-icon"><i class="fas fa-landmark"></i></div>
+                <div class="f-number" id="count_cagar_budaya">0</div>
+                <div class="f-label">Cagar Budaya</div>
+              </a>
+              <!-- Kartu kosong (placeholder) untuk menjaga grid 4 kolom -->
+              <div style="visibility:hidden;"></div>
+            </div>
+          </div>
+
+          <button class="slider-btn-nav slider-btn-next" id="opkNext"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <!-- DOTS INDICATOR -->
+        <div class="slider-dots" id="opkDots"></div>
+      </div>
+    </section>
+
+    <!-- ========== PROFIL ========== -->
+    <section class="section section-profile" id="profil">
+      <div class="container">
+        <div class="profile-grid">
+          <div class="profile-text" data-aos="fade-right">
+            <div class="profile-tag"><i class="fas fa-map-marker-alt"></i> Provinsi Banten</div>
+            <div class="section-eyebrow">Latar Belakang</div>
+            <h2 class="section-title">Mengenal<br />Budaya Banten</h2>
+            <p>
+              Berdasarkan Undang-Undang Nomor 23 Tahun 2000, Provinsi Banten secara resmi
+              ditetapkan sebagai provinsi yang sebelumnya merupakan bagian dari Provinsi Jawa Barat.
+              Provinsi Banten memiliki delapan wilayah administratif yang terdiri dari empat kabupaten
+              dan empat kota.
+            </p>
+            <p>
+              Dengan luas wilayah mencapai 9.663 km², Provinsi Banten memiliki kondisi geografis
+              dan demografi yang beragam. Keanekaragaman ini turut membentuk karakter masyarakat
+              Banten yang heterogen, baik dari segi budaya, tradisi, maupun praktik sosial.
+            </p>
+            <p>
+              Warisan budaya yang kaya dan unik ini menjadi identitas penting bagi masyarakat Banten,
+              sehingga pelestarian dan pengembangan budaya bukan hanya menjadi kebutuhan sosial,
+              tetapi juga menjadi fondasi pembentukan identitas daerah yang kokoh dan berkelanjutan.
+            </p>
+            <div class="info-chips">
+              <div class="info-chip"><i class="fas fa-city"></i> 4 Kota</div>
+              <div class="info-chip"><i class="fas fa-map"></i> 4 Kabupaten</div>
+              <div class="info-chip"><i class="fas fa-users"></i> Masyarakat Heterogen</div>
+              <div class="info-chip"><i class="fas fa-leaf"></i> Kearifan Lokal</div>
+            </div>
+          </div>
+
+          <div class="profile-visual" data-aos="fade-left">
+            <div class="profile-visual-main">
+              <img src="gunung.jpg" alt="Masjid Agung Banten" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/800x450/8b7a5e/fff?text=Banten+Lama'">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== OPK GRID (PENJELASAN) ========== -->
+    <section class="section section-opk" id="opk">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <div data-aos="fade-up">
+            <div class="section-eyebrow">Objek Pemajuan Kebudayaan</div>
+            <h2 class="section-title">10 Penjelasan <span class="highlight">OPK</span></h2>
+            <p class="section-sub">Klik salah satu kategori untuk melihat penjelasan detailnya.</p>
+          </div>
+        </div>
+
+        <div class="opk-grid">
+          <a href="penjelasan_tradisi_lisan.html" class="opk-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="opk-icon"><i class="fas fa-microphone-alt"></i></div>
+            <div class="opk-label">Penjelasan Tradisi Lisan</div>
+          </a>
+          <a href="penjelasan_manuskrip.html" class="opk-card" data-aos="fade-up" data-aos-delay="50">
+            <div class="opk-icon"><i class="fas fa-scroll"></i></div>
+            <div class="opk-label">Penjelasan Manuskrip</div>
+          </a>
+          <a href="penjelasan_adat_istiadat.html" class="opk-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="opk-icon"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="opk-label">Penjelasan Adat Istiadat</div>
+          </a>
+          <a href="penjelasan_ritus.html" class="opk-card" data-aos="fade-up" data-aos-delay="150">
+            <div class="opk-icon"><i class="fas fa-fire"></i></div>
+            <div class="opk-label">Penjelasan Ritus</div>
+          </a>
+          <a href="penjelasan_pengetahuan_tradisional.html" class="opk-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="opk-icon"><i class="fas fa-tree"></i></div>
+            <div class="opk-label">Penjelasan Pengetahuan Tradisional</div>
+          </a>
+          <a href="penjelasan_teknologi_tradisional.html" class="opk-card" data-aos="fade-up" data-aos-delay="250">
+            <div class="opk-icon"><i class="fas fa-cogs"></i></div>
+            <div class="opk-label">Penjelasan Teknologi Tradisional</div>
+          </a>
+          <a href="penjelasan_seni.html" class="opk-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="opk-icon"><i class="fas fa-palette"></i></div>
+            <div class="opk-label">Penjelasan Seni</div>
+          </a>
+          <a href="penjelasan_bahasa.html" class="opk-card" data-aos="fade-up" data-aos-delay="350">
+            <div class="opk-icon"><i class="fas fa-language"></i></div>
+            <div class="opk-label">Penjelasan Bahasa</div>
+          </a>
+          <a href="penjelasan_permainan_rakyat.html" class="opk-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="opk-icon"><i class="fas fa-dice"></i></div>
+            <div class="opk-label">Penjelasan Permainan Rakyat</div>
+          </a>
+          <a href="penjelasan_olahraga_tradisional.html" class="opk-card" data-aos="fade-up" data-aos-delay="450">
+            <div class="opk-icon"><i class="fas fa-running"></i></div>
+            <div class="opk-label">Penjelasan Olahraga Tradisional</div>
+          </a>
+          <a href="penjelasan_cagar_budaya.html" class="opk-card" data-aos="fade-up" data-aos-delay="500">
+            <div class="opk-icon"><i class="fas fa-landmark"></i></div>
+            <div class="opk-label">Penjelasan Cagar Budaya</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SARANA ========== -->
+<section class="section section-sarana" id="sarana">
+  <div class="container">
+    <div class="section-header">
+      <div data-aos="fade-right">
+        <div class="section-eyebrow"></div>
+        <h2 class="section-title">Berita</span></h2>
+        <p class="section-sub"></p>
+      </div>
+      <div data-aos="fade-left">
+        <button class="btn btn-secondary" onclick="window.location.href='#sumber'">
+          <i class="fas fa-download"></i> Lihat Sumber Data
+        </button>
+      </div>
+    </div>
+    <!-- ========== SLIDER GAMBAR 11 OPK - KOTAK ========== -->
+    <div class="opk-slider-wrapper" data-aos="fade-up">
+      <button class="slider-btn-nav slider-btn-prev" id="saranaSliderPrev"><i class="fas fa-chevron-left"></i></button>
+
+      <div class="opk-slider-container" id="saranaSlider">
+        <!-- SLIDE 1: 4 OPK pertama -->
+        <div class="opk-slide">
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='tradisi_lisan.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="debus.jpeg"
+              alt="Tradisi Lisan" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/8b7a5e/fff?text=Tradisi+Lisan'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.1</div>
+              <div class="sarana-card-title">Tradisi Lisan</div>
+              <p class="sarana-card-desc">Fasilitas untuk penyelenggaraan pertunjukan dan pelestarian tradisi lisan masyarakat Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_tradisi_lisan_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 40%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 60%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='manuskrip.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="topeng.jpeg"
+              alt="Manuskrip" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/6d8a7b/fff?text=Manuskrip'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.2</div>
+              <div class="sarana-card-title">Manuskrip</div>
+              <p class="sarana-card-desc">Fasilitas untuk penyimpanan, perawatan, dan pengkajian naskah kuno Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_manuskrip_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 50%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 50%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='adat_istiadat.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Baduy_people.jpg/640px-Baduy_people.jpg"
+              alt="Adat Istiadat" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/a68b6b/fff?text=Adat+Istiadat'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.3</div>
+              <div class="sarana-card-title">Adat Istiadat</div>
+              <p class="sarana-card-desc">Fasilitas pendukung pelestarian adat istiadat dan tradisi masyarakat Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_adat_istiadat_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 40%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 60%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='ritus.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Seren_Taun.jpg/640px-Seren_Taun.jpg"
+              alt="Ritus" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/8b7a5e/fff?text=Ritus'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.4</div>
+              <div class="sarana-card-title">Ritus</div>
+              <p class="sarana-card-desc">Fasilitas untuk pelaksanaan upacara dan ritual adat masyarakat Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_ritus_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 40%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 60%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2: 4 OPK berikutnya -->
+        <div class="opk-slide">
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='pengetahuan_tradisional.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Benteng_Speelwijk.jpg/640px-Benteng_Speelwijk.jpg"
+              alt="Pengetahuan Tradisional" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/a68b6b/fff?text=Pengetahuan+Tradisional'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.5</div>
+              <div class="sarana-card-title">Pengetahuan Tradisional</div>
+              <p class="sarana-card-desc">Pusat dokumentasi dan pewarisan pengetahuan leluhur komunitas adat Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_pengetahuan_tradisional_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 45%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 55%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='teknologi_tradisional.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Kujang_sundanese.jpg/640px-Kujang_sundanese.jpg"
+              alt="Teknologi Tradisional" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/6d8a7b/fff?text=Teknologi+Tradisional'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.6</div>
+              <div class="sarana-card-title">Teknologi Tradisional</div>
+              <p class="sarana-card-desc">Fasilitas untuk pelestarian dan pengembangan teknologi tradisional Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_teknologi_tradisional_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 50%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 50%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='seni.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Debus_performers.jpg/640px-Debus_performers.jpg"
+              alt="Seni" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/8b7a5e/fff?text=Seni'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.7</div>
+              <div class="sarana-card-title">Seni</div>
+              <p class="sarana-card-desc">Ruang dan panggung untuk menampilkan ekspresi seni tradisi dan kontemporer Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_seni_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 70%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 30%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='bahasa.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Banten_script.jpg/640px-Banten_script.jpg"
+              alt="Bahasa" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/6d8a7b/fff?text=Bahasa'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.8</div>
+              <div class="sarana-card-title">Bahasa</div>
+              <p class="sarana-card-desc">Fasilitas untuk pelestarian dan pengembangan bahasa daerah di Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_bahasa_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 40%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 60%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 3: 3 OPK sisanya -->
+        <div class="opk-slide">
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='permainan_rakyat.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Congklak_board.jpg/640px-Congklak_board.jpg"
+              alt="Permainan Rakyat" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/a68b6b/fff?text=Permainan+Rakyat'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.9</div>
+              <div class="sarana-card-title">Permainan Rakyat</div>
+              <p class="sarana-card-desc">Fasilitas untuk pelestarian dan pengembangan permainan tradisional Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_permainan_rakyat_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 40%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 60%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='olahraga_tradisional.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Pencak_silat.jpg/640px-Pencak_silat.jpg"
+              alt="Olahraga Tradisional" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/8b7a5e/fff?text=Olahraga+Tradisional'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.10</div>
+              <div class="sarana-card-title">Olahraga Tradisional</div>
+              <p class="sarana-card-desc">Fasilitas untuk pelestarian dan pengembangan olahraga tradisional Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_olahraga_tradisional_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 70%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 30%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sarana-card sarana-card-square" onclick="window.location.href='cagar_budaya.html'">
+            <div class="sarana-card-img-wrap">
+              <img class="sarana-card-img"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Masjid_Agung_Banten.jpg/640px-Masjid_Agung_Banten.jpg"
+              alt="Cagar Budaya" loading="lazy"
+              onerror="this.src='https://via.placeholder.com/400x400/8b7a5e/fff?text=Cagar+Budaya'">
+              <div class="sarana-card-img-overlay"></div>
+            </div>
+            <div class="sarana-card-body">
+              <div class="sarana-card-eyebrow">BAB 6.11</div>
+              <div class="sarana-card-title">Cagar Budaya</div>
+              <p class="sarana-card-desc">Fasilitas untuk pelindungan, pengembangan, dan pemanfaatan cagar budaya Banten.</p>
+              <div style="margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;padding-top:8px;">
+                <span class="badge badge-gold"><i class="fas fa-check-circle"></i> <span id="count_cagar_budaya_sarana">0</span> Data</span>
+                <span class="badge badge-green"><i class="fas fa-building"></i> 70%</span>
+                <span class="badge badge-warning"><i class="fas fa-users"></i> 30%</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="visibility:hidden;"></div>
+        </div>
+      </div>
+
+      <button class="slider-btn-nav slider-btn-next" id="saranaSliderNext"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- DOTS INDICATOR -->
+    <div class="slider-dots" id="saranaDots"></div>
+  </div>
+</section>
+
+    <!-- ========== CHART ========== -->
+<section class="section section-alt" id="statistik">
+  <div class="container">
+    <div class="section-header section-header-center">
+      <div data-aos="fade-up">
+        <div class="section-eyebrow">Visualisasi Data</div>
+        <h2 class="section-title">Distribusi <span class="highlight">Fasilitas</span> Budaya</h2>
+        <p class="section-sub">Grafik distribusi data per kategori OPK di Provinsi Banten. Data otomatis terupdate dari Admin Panel.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="chart-container" data-aos="fade-right">
+        <div class="chart-title">Jumlah Data per OPK</div>
+        <div class="chart-wrapper">
+          <canvas id="opkChart"></canvas>
+        </div>
+        <div style="text-align:center;font-size:0.7rem;color:var(--slate-soft);margin-top:8px;">
+          Klik batang untuk melihat detail
+        </div>
+      </div>
+
+      <div class="chart-container" data-aos="fade-left">
+        <div class="chart-title">Distribusi Data OPK</div>
+        <div class="chart-wrapper">
+          <canvas id="opkDoughnutChart"></canvas>
+        </div>
+        <div style="text-align:center;font-size:0.7rem;color:var(--slate-soft);margin-top:8px;">
+          Total Data: <span id="totalDataChart" style="color:var(--gold);font-weight:700;">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container" data-aos="fade-up" style="margin-top:20px;">
+      <div class="chart-title">Tren Pengembangan Data per OPK</div>
+      <div class="chart-wrapper" style="height:250px;">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- ========== SUMBER DATA ========== -->
+    <section class="section" id="sumber">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <div data-aos="fade-up">
+            <div class="section-eyebrow">Referensi</div>
+            <h2 class="section-title">Sumber <span class="highlight">Data</span></h2>
+            <p class="section-sub">Seluruh data pada dashboard ini bersumber dari dokumen resmi dan sistem informasi kebudayaan.</p>
+          </div>
+        </div>
+
+        <div class="sumber-grid">
+          <div class="sumber-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="sumber-icon"><i class="fas fa-database"></i></div>
+            <div>
+              <div class="sumber-title">Sistem Aplikasi APIK</div>
+              <p class="sumber-desc">Aplikasi Pemajuan Informasi Kebudayaan — platform nasional pencatatan OPK.</p>
+            </div>
+          </div>
+          <div class="sumber-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="sumber-icon"><i class="fas fa-file-alt"></i></div>
+            <div>
+              <div class="sumber-title">PPKD Provinsi Banten 2025</div>
+              <p class="sumber-desc">Dokumen Pokok Pikiran Kebudayaan Daerah — perencanaan strategis bidang kebudayaan.</p>
+            </div>
+          </div>
+          <div class="sumber-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="sumber-icon"><i class="fas fa-landmark"></i></div>
+            <div>
+              <div class="sumber-title">UU No. 23 Tahun 2000</div>
+              <p class="sumber-desc">Undang-Undang pembentukan Provinsi Banten sebagai dasar hukum pemerintahan daerah.</p>
+            </div>
+          </div>
+          <div class="sumber-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="sumber-icon"><i class="fas fa-scroll"></i></div>
+            <div>
+              <div class="sumber-title">UU No. 5 Tahun 2017</div>
+              <p class="sumber-desc">Undang-Undang Pemajuan Kebudayaan — landasan hukum pelestarian kebudayaan.</p>
+            </div>
+          </div>
+          <div class="sumber-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="sumber-icon"><i class="fas fa-map"></i></div>
+            <div>
+              <div class="sumber-title">BPS Provinsi Banten</div>
+              <p class="sumber-desc">Badan Pusat Statistik Provinsi Banten — data demografi dan statistik wilayah.</p>
+            </div>
+          </div>
+          <div class="sumber-card" data-aos="fade-up" data-aos-delay="500">
+            <div class="sumber-icon"><i class="fas fa-university"></i></div>
+            <div>
+              <div class="sumber-title">Dinas Pendidikan dan Kebudayaan</div>
+              <p class="sumber-desc">Data dan program pemajuan kebudayaan dari Dinas Pendidikan dan Kebudayaan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== INFO BUDAYA ========== -->
+    <section class="section-info-budaya" id="galeri">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <div data-aos="fade-up">
+            <div class="section-eyebrow" style="color:#D4A853;">Informasi</div>
+            <h2 class="section-title" style="color:#fff;">Tugas <span style="color:#D4A853;">Bidang Kebudayaan</span></h2>
+            <p style="color:rgba(255,255,255,0.7);font-size:1rem;max-width:560px;margin:0 auto;line-height:1.7;">
+              Lihat keseluruhan tugas dan program strategis bidang kebudayaan Provinsi Banten
+              sebagai acuan perencanaan dan pelaksanaan kegiatan.
+            </p>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item" data-aos="fade-up" data-aos-delay="0">
+            <div class="info-number">23</div>
+            <div class="info-label">Pokok Bahasan</div>
+          </div>
+          <div class="info-item" data-aos="fade-up" data-aos-delay="100">
+            <div class="info-number">200+</div>
+            <div class="info-label">Sub Program</div>
+          </div>
+          <div class="info-item" data-aos="fade-up" data-aos-delay="200">
+            <div class="info-number">10+</div>
+            <div class="info-label">Instansi Terlibat</div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:32px;">
+          <a href="tugas_bidang_kebudayaan.html" class="btn-cta">
+            <i class="fas fa-arrow-right"></i> Lihat Selengkapnya
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <p>Dashboard data sarana dan prasarana kebudayaan Provinsi Banten. Dibangun sebagai referensi perencanaan dan pemajuan kebudayaan daerah.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Navigasi</h4>
+            <ul>
+              <li><a href="#profil"><i class="fas fa-map-marked-alt"></i> Profil Banten</a></li>
+              <li><a href="#opk"><i class="fas fa-th-large"></i> OPK</a></li>
+              <li><a href="#sarana"><i class="fas fa-layer-group"></i> Sarana & Prasarana</a></li>
+              <li><a href="#sumber"><i class="fas fa-book-open"></i> Sumber Data</a></li>
+              <li><a href="buku.html"><i class="fas fa-book"></i> Buku</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Kategori OPK</h4>
+            <ul>
+              <li><a href="tradisi_lisan.html"><i class="fas fa-microphone-alt"></i> Tradisi Lisan</a></li>
+              <li><a href="manuskrip.html"><i class="fas fa-scroll"></i> Manuskrip</a></li>
+              <li><a href="adat_istiadat.html"><i class="fas fa-hand-holding-heart"></i> Adat Istiadat</a></li>
+              <li><a href="ritus.html"><i class="fas fa-fire"></i> Ritus</a></li>
+              <li><a href="seni.html"><i class="fas fa-palette"></i> Seni</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Lebih Banyak</h4>
+            <ul>
+              <li><a href="pengetahuan_tradisional.html"><i class="fas fa-tree"></i> Pengetahuan Tradisional</a></li>
+              <li><a href="teknologi_tradisional.html"><i class="fas fa-cogs"></i> Teknologi Tradisional</a></li>
+              <li><a href="bahasa.html"><i class="fas fa-language"></i> Bahasa</a></li>
+              <li><a href="permainan_rakyat.html"><i class="fas fa-dice"></i> Permainan Rakyat</a></li>
+              <li><a href="olahraga_tradisional.html"><i class="fas fa-running"></i> Olahraga Tradisional</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Budaya Nusantara <span class="dot"></span> Provinsi Banten</span>
+          <span>Data: Sistem APIK <span class="dot"></span> PPKD Banten 2025</span>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/kebudayaanbanten.official/" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/kebudayaanbanten.official/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://m.youtube.com/%40kebudayaanbanten.official" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- /body-overlay -->
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // ===== LOADER =====
+      const loader = document.getElementById('pageLoader');
+      setTimeout(function() {
+        loader.classList.add('hidden');
+        setTimeout(function() {
+          loader.style.display = 'none';
+        }, 600);
+      }, 1500);
+
+      // ===== AOS =====
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: false,
+        offset: 50
+      });
+
+      // ===== NAVBAR SCROLL =====
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+
+      // ===== HAMBURGER =====
+      const hamburger = document.getElementById('hamburger');
+      const drawer = document.getElementById('navDrawer');
+      const body = document.body;
+
+      if (hamburger && drawer) {
+        hamburger.addEventListener('click', function() {
+          const isOpen = hamburger.classList.toggle('open');
+          drawer.classList.toggle('open', isOpen);
+          body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        document.querySelectorAll('.drawer-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            hamburger.classList.remove('open');
+            drawer.classList.remove('open');
+            body.style.overflow = '';
+          });
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && drawer.classList.contains('open')) {
+            hamburger.classList.remove('open');
+            drawer.classList.remove('open');
+            body.style.overflow = '';
+          }
+        });
+      }
+
+      // ===== DROPDOWN OPK =====
+      document.querySelectorAll('.has-drop').forEach(function(item) {
+        const link = item.querySelector('a');
+        if (link) {
+          link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && href !== '#' && href !== '#opk' && !href.startsWith('#opk')) {
+              return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelectorAll('.has-drop').forEach(function(other) {
+              if (other !== item) other.classList.remove('open');
+            });
+            item.classList.toggle('open');
+          });
+        }
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.has-drop')) {
+          document.querySelectorAll('.has-drop').forEach(function(item) {
+            item.classList.remove('open');
+          });
+        }
+      });
+
+      // ===== DROPDOWN LAINNYA =====
+      const btnMore = document.getElementById('btnMore');
+      const dropdownMore = document.getElementById('dropdownMore');
+
+      if (btnMore && dropdownMore) {
+        btnMore.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdownMore.classList.toggle('open');
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.dropdown-more')) {
+            dropdownMore.classList.remove('open');
+          }
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            dropdownMore.classList.remove('open');
+          }
+        });
+      }
+
+      // ================================================================
+      // ===== EFEK PARALLAX PADA BACKGROUND HERO =====
+      // ================================================================
+      const heroBg = document.getElementById('heroBg');
+      const heroSection = document.querySelector('.hero');
+
+      if (heroBg && heroSection) {
+        window.addEventListener('scroll', function() {
+          const scrollY = window.scrollY;
+          const heroHeight = heroSection.offsetHeight;
+          // Efek parallax: background bergerak lebih lambat
+          const translateY = scrollY * 0.3;
+          // Jangan gerakkan terlalu ekstrim
+          if (scrollY < heroHeight) {
+            heroBg.style.transform = 'translateY(' + translateY + 'px) scale(1.05)';
+          } else {
+            heroBg.style.transform = 'translateY(' + (heroHeight * 0.3) + 'px) scale(1.05)';
+          }
+        }, { passive: true });
+      }
+
+      // ================================================================
+      // ===== EFEK 3D TILT PADA HERO =====
+      // ================================================================
+      const heroContent = document.getElementById('heroContent');
+      if (heroContent) {
+        heroContent.addEventListener('mousemove', function(e) {
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -6;
+          const rotateY = ((x - centerX) / centerX) * 6;
+          this.style.setProperty('--tiltX', rotateX + 'deg');
+          this.style.setProperty('--tiltY', rotateY + 'deg');
+          this.classList.add('tilt-effect');
+        });
+
+        heroContent.addEventListener('mouseleave', function() {
+          this.style.setProperty('--tiltX', '0deg');
+          this.style.setProperty('--tiltY', '0deg');
+          this.classList.remove('tilt-effect');
+        });
+      }
+
+      // ================================================================
+      // ===== EFEK RIPPLE PADA SEMUA TOMBOL =====
+      // ================================================================
+      document.querySelectorAll('.btn, .btn-cta, .btn-more, .slider-btn-nav, .btn-detail-row, .link-detail').forEach(function(
+        btn) {
+        btn.addEventListener('click', function(e) {
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.left = x + 'px';
+          ripple.style.top = y + 'px';
+          ripple.style.width = '20px';
+          ripple.style.height = '20px';
+          this.appendChild(ripple);
+          setTimeout(function() {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // ================================================================
+      // ===== GANTI BACKGROUND HERO =====
+      // ================================================================
+      const bgInput = document.getElementById('bgInput');
+
+      if (bgInput && heroBg) {
+        document.addEventListener('keydown', function(e) {
+          if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'U') {
+            e.preventDefault();
+            bgInput.click();
+          }
+        });
+
+        bgInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+          if (!validTypes.includes(file.type)) {
+            alert('Mohon upload file gambar (JPG, PNG, WEBP, atau GIF)');
+            this.value = '';
+            return;
+          }
+          if (file.size > 10 * 1024 * 1024) {
+            alert('Ukuran file terlalu besar (maksimal 10MB)');
+            this.value = '';
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            heroBg.style.transition = 'opacity 0.6s ease';
+            heroBg.style.opacity = '0';
+            setTimeout(function() {
+              heroBg.style.backgroundImage = 'url(' + e.target.result + ')';
+              heroBg.style.opacity = '1';
+              // Animasi zoom tetap berjalan, parallax tetap aktif
+              try {
+                localStorage.setItem('heroBackground', e.target.result);
+              } catch (err) {
+                console.warn('Could not save to localStorage:', err);
+              }
+            }, 600);
+          };
+          reader.readAsDataURL(file);
+        });
+
+        try {
+          const savedBg = localStorage.getItem('heroBackground');
+          if (savedBg) {
+            heroBg.style.backgroundImage = 'url(' + savedBg + ')';
+          }
+        } catch (err) {
+          console.warn('Could not load saved background:', err);
+        }
+      }
+
+      // ===== PROGRESS BARS =====
+      const fillGov = document.getElementById('fillGov');
+      const fillMasy = document.getElementById('fillMasy');
+      let barsAnimated = false;
+
+      function animateBars() {
+        if (barsAnimated) return;
+        const saranaSection = document.getElementById('sarana');
+        if (!saranaSection) return;
+        const rect = saranaSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          barsAnimated = true;
+          if (fillGov) setTimeout(function() { fillGov.style.width = '40%'; }, 300);
+          if (fillMasy) setTimeout(function() { fillMasy.style.width = '60%'; }, 500);
+        }
+      }
+
+      window.addEventListener('scroll', animateBars, { passive: true });
+      setTimeout(animateBars, 500);
+
+      const barsObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting && !barsAnimated) animateBars();
+        });
+      }, { threshold: 0.3 });
+      const saranaSection = document.getElementById('sarana');
+      if (saranaSection) barsObserver.observe(saranaSection);
+
+      // ===== SMOOTH SCROLL =====
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            const navbarHeight = document.getElementById('navbar')?.offsetHeight || 72;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // ===== COUNTER ANIMATION =====
+      function animateCounter(element, target, duration) {
+        duration = duration || 2000;
+        const start = 0;
+        const startTime = performance.now();
+
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(start + (target - start) * eased);
+          element.textContent = current.toLocaleString();
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          } else {
+            element.textContent = target.toLocaleString();
+          }
+        }
+        requestAnimationFrame(updateCounter);
+      }
+
+      const statNumbers = document.querySelectorAll('.stat-number');
+      if (statNumbers.length > 0) {
+        const counterObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              const target = parseInt(entry.target.dataset.target) ||
+                parseInt(entry.target.textContent.replace(/,/g, '')) || 1000;
+              animateCounter(entry.target, target);
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.5 });
+        statNumbers.forEach(function(el) {
+          counterObserver.observe(el);
+        });
+      }
+
+      // ===== BACK TO TOP =====
+      (function createBackToTop() {
+        const btn = document.createElement('button');
+        btn.id = 'backToTop';
+        btn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        document.body.appendChild(btn);
+
+        window.addEventListener('scroll', function() {
+          btn.classList.toggle('visible', window.scrollY > 500);
+        });
+
+        btn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      })();
+
+      // ================================================================
+      // ===== FUNGSI LOAD DATA DARI ADMIN UNTUK SETIAP OPK =====
+      // ================================================================
+      function loadAdminCount(key, elementId) {
+        try {
+          const raw = localStorage.getItem(key);
+          const data = raw ? JSON.parse(raw) : [];
+          const countEl = document.getElementById(elementId);
+          if (countEl) {
+            countEl.textContent = data.length;
+          }
+          return data.length;
+        } catch (e) {
+          console.warn('Gagal load data ' + key + ':', e);
+          return 0;
+        }
+      }
+
+      function updateAllCounts() {
+        const mapping = {
+          'admin_tradisi_lisan': 'count_tradisi_lisan',
+          'admin_manuskrip': 'count_manuskrip',
+          'admin_adat_istiadat': 'count_adat_istiadat',
+          'admin_ritus': 'count_ritus',
+          'admin_pengetahuan_tradisional': 'count_pengetahuan_tradisional',
+          'admin_teknologi_tradisional': 'count_teknologi_tradisional',
+          'admin_seni': 'count_seni',
+          'admin_bahasa': 'count_bahasa',
+          'admin_permainan_rakyat': 'count_permainan_rakyat',
+          'admin_olahraga_tradisional': 'count_olahraga_tradisional',
+          'admin_cagar_budaya': 'count_cagar_budaya'
+        };
+
+        let total = 0;
+        for (const [key, elementId] of Object.entries(mapping)) {
+          const count = loadAdminCount(key, elementId);
+          total += count;
+        }
+        console.log('✅ Total data dari semua OPK:', total);
+      }
+
+      // Load pertama kali
+      updateAllCounts();
+
+      // Update ketika ada perubahan dari tab lain (admin)
+      window.addEventListener('storage', function(e) {
+        if (e.key && e.key.startsWith('admin_')) {
+          updateAllCounts();
+        }
+      });
+
+      // Update periodik setiap 5 detik (untuk keamanan)
+      setInterval(updateAllCounts, 5000);
+
+      // ================================================================
+      // ===== SLIDER OPK =====
+      // ================================================================
+      const sliderContainer = document.getElementById('opkSlider');
+      const prevBtn = document.getElementById('opkPrev');
+      const nextBtn = document.getElementById('opkNext');
+      const dotsContainer = document.getElementById('opkDots');
+
+      if (sliderContainer && prevBtn && nextBtn && dotsContainer) {
+        const slides = sliderContainer.querySelectorAll('.opk-slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+
+        // Buat dots
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('button');
+          dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+          dot.dataset.index = i;
+          dot.addEventListener('click', function() {
+            goToSlide(parseInt(this.dataset.index));
+          });
+          dotsContainer.appendChild(dot);
+        }
+        const dots = dotsContainer.querySelectorAll('.slider-dot');
+
+        function goToSlide(index) {
+          if (index < 0) index = totalSlides - 1;
+          if (index >= totalSlides) index = 0;
+          currentSlide = index;
+          sliderContainer.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+          dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentSlide);
+          });
+        }
+
+        prevBtn.addEventListener('click', function() {
+          goToSlide(currentSlide - 1);
+        });
+
+        nextBtn.addEventListener('click', function() {
+          goToSlide(currentSlide + 1);
+        });
+
+        // Auto-slide untuk layar kecil
+        let autoSlideInterval;
+
+        function startAutoSlide() {
+          if (window.innerWidth < 768) {
+            if (autoSlideInterval) clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(function() {
+              goToSlide(currentSlide + 1);
+            }, 5000);
+          } else {
+            if (autoSlideInterval) {
+              clearInterval(autoSlideInterval);
+              autoSlideInterval = null;
+            }
+          }
+        }
+        startAutoSlide();
+        window.addEventListener('resize', startAutoSlide);
+      }
+
+     // ================================================================
+// ===== CHARTS - TERHUBUNG DENGAN 11 OPK =====
+// ================================================================
+
+let opkChartInstance = null;
+let opkDoughnutInstance = null;
+let trendChartInstance = null;
+
+// Mapping OPK Keys dan Labels
+const OPK_CONFIG = {
+  'admin_tradisi_lisan': { label: 'Tradisi Lisan', page: 'tradisi_lisan.html', icon: 'fa-microphone-alt', color: '#B8893A' },
+  'admin_manuskrip': { label: 'Manuskrip', page: 'manuskrip.html', icon: 'fa-scroll', color: '#D4A853' },
+  'admin_adat_istiadat': { label: 'Adat Istiadat', page: 'adat_istiadat.html', icon: 'fa-hand-holding-heart', color: '#4A7C5E' },
+  'admin_ritus': { label: 'Ritus', page: 'ritus.html', icon: 'fa-fire', color: '#F57F17' },
+  'admin_pengetahuan_tradisional': { label: 'Pengetahuan Tradisional', page: 'pengetahuan_tradisional.html', icon: 'fa-tree', color: '#6A1B9A' },
+  'admin_teknologi_tradisional': { label: 'Teknologi Tradisional', page: 'teknologi_tradisional.html', icon: 'fa-cogs', color: '#00695C' },
+  'admin_seni': { label: 'Seni', page: 'seni.html', icon: 'fa-palette', color: '#C62828' },
+  'admin_bahasa': { label: 'Bahasa', page: 'bahasa.html', icon: 'fa-language', color: '#0D47A1' },
+  'admin_permainan_rakyat': { label: 'Permainan Rakyat', page: 'permainan_rakyat.html', icon: 'fa-dice', color: '#283593' },
+  'admin_olahraga_tradisional': { label: 'Olahraga Tradisional', page: 'olahraga_tradisional.html', icon: 'fa-running', color: '#C2185B' },
+  'admin_cagar_budaya': { label: 'Cagar Budaya', page: 'cagar_budaya.html', icon: 'fa-landmark', color: '#F57F17' }
+};
+
+function getOPKData() {
+  const labels = [];
+  const data = [];
+  const colors = [];
+  const pages = [];
+
+  for (const [key, config] of Object.entries(OPK_CONFIG)) {
+    try {
+      const raw = localStorage.getItem(key);
+      const items = raw ? JSON.parse(raw) : [];
+      labels.push(config.label);
+      data.push(items.length);
+      colors.push(config.color);
+      pages.push(config.page);
+    } catch (e) {
+      labels.push(config.label);
+      data.push(0);
+      colors.push(config.color);
+      pages.push(config.page);
+    }
+  }
+
+  return { labels, data, colors, pages };
+}
+
+function initCharts() {
+  const textColor = '#D0D0D0';
+  const gridColor = 'rgba(255,255,255,0.08)';
+  const { labels, data, colors, pages } = getOPKData();
+
+  // Update total data
+  const totalEl = document.getElementById('totalDataChart');
+  if (totalEl) {
+    const total = data.reduce((a, b) => a + b, 0);
+    totalEl.textContent = total;
+  }
+
+  // ===== CHART 1: Bar Chart (Jumlah Data per OPK) =====
+  const opkCtx = document.getElementById('opkChart');
+  if (opkCtx) {
+    if (opkChartInstance) opkChartInstance.destroy();
+    opkChartInstance = new Chart(opkCtx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Jumlah Data',
+          data: data,
+          backgroundColor: colors.map(c => c + 'CC'),
+          borderColor: colors,
+          borderWidth: 2,
+          borderRadius: 6,
+          barPercentage: 0.7
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(40,40,40,0.9)',
+            titleColor: '#E8DDD0',
+            bodyColor: '#A0A0A0',
+            borderColor: 'rgba(184,137,58,0.2)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 12,
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y + ' data';
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: textColor, stepSize: 1 },
+            grid: { color: gridColor }
+          },
+          x: {
+            ticks: {
+              color: textColor,
+              font: { size: 8, weight: '500' },
+              maxRotation: 45,
+              minRotation: 30
+            },
+            grid: { display: false }
+          }
+        },
+        onClick: function(event, elements) {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const page = pages[index];
+            if (page) {
+              window.location.href = page;
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // ===== CHART 2: Doughnut Chart (Distribusi Data) =====
+  const doughnutCtx = document.getElementById('opkDoughnutChart');
+  if (doughnutCtx) {
+    if (opkDoughnutInstance) opkDoughnutInstance.destroy();
+    opkDoughnutInstance = new Chart(doughnutCtx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: colors,
+          borderColor: '#1A1A1A',
+          borderWidth: 2,
+          hoverOffset: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              color: textColor,
+              padding: 10,
+              usePointStyle: true,
+              pointStyle: 'circle',
+              font: { size: 9, weight: '500' },
+              boxWidth: 10,
+              maxWidth: 120
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(40,40,40,0.9)',
+            titleColor: '#E8DDD0',
+            bodyColor: '#A0A0A0',
+            borderColor: 'rgba(184,137,58,0.2)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 12,
+            callbacks: {
+              label: function(context) {
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                return context.label + ': ' + context.parsed + ' data (' + percentage + '%)';
+              }
+            }
+          }
+        },
+        cutout: '60%'
+      }
+    });
+  }
+
+  // ===== CHART 3: Trend Chart (Perbandingan Data) =====
+  const trendCtx = document.getElementById('trendChart');
+  if (trendCtx) {
+    if (trendChartInstance) trendChartInstance.destroy();
+    
+    // Untuk trend, kita gunakan beberapa OPK sebagai contoh
+    const trendLabels = labels;
+    const trendColors = ['#B8893A', '#4A7C5E', '#0D47A1', '#C62828', '#6A1B9A', '#F57F17', '#00695C', '#C2185B', '#283593', '#D4A853', '#F57F17'];
+    const trendDatasets = data.map((value, index) => {
+      return {
+        label: labels[index],
+        data: [0, value], // Simulasi tren
+        borderColor: trendColors[index % trendColors.length],
+        backgroundColor: trendColors[index % trendColors.length] + '20',
+        borderWidth: 2,
+        fill: false,
+        tension: 0.4,
+        pointBackgroundColor: trendColors[index % trendColors.length],
+        pointBorderColor: '#1A1A1A',
+        pointBorderWidth: 1,
+        pointRadius: 3,
+        showLine: true,
+        spanGaps: true
+      };
+    });
+
+    // Ambil 5 OPK dengan data terbanyak untuk trend
+    const sortedIndices = data.map((v, i) => i).sort((a, b) => data[b] - data[a]);
+    const topIndices = sortedIndices.slice(0, 5);
+    const topDatasets = topIndices.map(index => ({
+      label: labels[index],
+      data: [0, data[index]],
+      borderColor: colors[index],
+      backgroundColor: colors[index] + '20',
+      borderWidth: 2.5,
+      fill: false,
+      tension: 0.4,
+      pointBackgroundColor: colors[index],
+      pointBorderColor: '#1A1A1A',
+      pointBorderWidth: 1,
+      pointRadius: 4,
+      showLine: true
+    }));
+
+    trendChartInstance = new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ['Sebelum', 'Saat Ini'],
+        datasets: topDatasets.length > 0 ? topDatasets : [{
+          label: 'Tidak ada data',
+          data: [0, 0],
+          borderColor: '#666',
+          backgroundColor: '#66620',
+          borderWidth: 2,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              color: textColor,
+              padding: 10,
+              usePointStyle: true,
+              pointStyle: 'circle',
+              font: { size: 10, weight: '500' },
+              boxWidth: 12
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(40,40,40,0.9)',
+            titleColor: '#E8DDD0',
+            bodyColor: '#A0A0A0',
+            borderColor: 'rgba(184,137,58,0.2)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 12,
+            callbacks: {
+              label: function(context) {
+                return context.dataset.label + ': ' + context.parsed.y + ' data';
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: textColor, stepSize: 1 },
+            grid: { color: gridColor }
+          },
+          x: {
+            ticks: { color: textColor, font: { size: 10, weight: '600' } },
+            grid: { display: false }
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        }
+      }
+    });
+  }
+}
+
+// Fungsi untuk update semua chart
+function updateAllCharts() {
+  const { labels, data, colors, pages } = getOPKData();
+  
+  // Update total data
+  const totalEl = document.getElementById('totalDataChart');
+  if (totalEl) {
+    const total = data.reduce((a, b) => a + b, 0);
+    totalEl.textContent = total;
+  }
+
+  // Update Bar Chart
+  if (opkChartInstance) {
+    opkChartInstance.data.datasets[0].data = data;
+    opkChartInstance.update('none');
+  }
+
+  // Update Doughnut Chart
+  if (opkDoughnutInstance) {
+    opkDoughnutInstance.data.datasets[0].data = data;
+    opkDoughnutInstance.update('none');
+  }
+
+  // Update Trend Chart - ambil 5 data terbesar
+  if (trendChartInstance) {
+    const sortedIndices = data.map((v, i) => i).sort((a, b) => data[b] - data[a]);
+    const topIndices = sortedIndices.slice(0, 5);
+    const topDatasets = topIndices.map(index => ({
+      label: labels[index],
+      data: [0, data[index]],
+      borderColor: colors[index],
+      backgroundColor: colors[index] + '20',
+      borderWidth: 2.5,
+      fill: false,
+      tension: 0.4,
+      pointBackgroundColor: colors[index],
+      pointBorderColor: '#1A1A1A',
+      pointBorderWidth: 1,
+      pointRadius: 4,
+      showLine: true
+    }));
+
+    trendChartInstance.data.datasets = topDatasets.length > 0 ? topDatasets : [{
+      label: 'Tidak ada data',
+      data: [0, 0],
+      borderColor: '#666',
+      backgroundColor: '#66620',
+      borderWidth: 2,
+      fill: false
+    }];
+    trendChartInstance.update('none');
+  }
+}
+
+// Inisialisasi chart pertama kali
+setTimeout(function() {
+  initCharts();
+}, 500);
+
+// Update chart setiap 3 detik (sinkron dengan data admin)
+setInterval(function() {
+  updateAllCharts();
+}, 3000);
+
+// Update ketika ada perubahan di localStorage (dari tab lain)
+window.addEventListener('storage', function(e) {
+  if (e.key && e.key.startsWith('admin_')) {
+    updateAllCharts();
+  }
+});
+
+// Update saat window resize
+let resizeTimeout;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(function() {
+    if (opkChartInstance) opkChartInstance.resize();
+    if (opkDoughnutInstance) opkDoughnutInstance.resize();
+    if (trendChartInstance) trendChartInstance.resize();
+  }, 250);
+});
+
+console.log('%c📊 Chart terhubung dengan 11 OPK', 'font-size:14px;font-weight:bold;color:#B8893A;');
+console.log('%c🔄 Data otomatis terupdate setiap 3 detik', 'font-size:12px;color:#4A7C5E;');
+console.log('%c📈 Klik batang chart → navigasi ke halaman OPK', 'font-size:12px;color:#D4A853;');
+
+      console.log('%c🌿 Budaya Nusantara', 'font-size:24px;font-weight:bold;color:#B8893A;');
+      console.log('%cDashboard Kebudayaan Provinsi Banten 2026', 'font-size:14px;color:#5C3D1E;');
+      console.log('%c📊 Data dari Sistem APIK · Kemendikbudristek', 'font-size:12px;color:#6B797E;');
+      console.log('%c🔗 Grafik dapat diklik → navigasi ke halaman OPK', 'font-size:12px;color:#D4A853;');
+      console.log('%c📈 Data otomatis terupdate dari Admin Panel', 'font-size:12px;color:#2E7D32;');
+      console.log('✨ Shortcuts: Ctrl+K (Cari) | Esc (Tutup menu) | Ctrl+Shift+U (Ganti Background Hero)');
+      console.log('%c✅ Dashboard siap digunakan!', 'font-size:16px;font-weight:bold;color:#2E7D32;');
+    });
+
+    // ===== SLIDER SARANA (11 OPK) =====
+const saranaSlider = document.getElementById('saranaSlider');
+const saranaPrev = document.getElementById('saranaSliderPrev');
+const saranaNext = document.getElementById('saranaSliderNext');
+const saranaDots = document.getElementById('saranaDots');
+
+if (saranaSlider && saranaPrev && saranaNext && saranaDots) {
+  const slides = saranaSlider.querySelectorAll('.opk-slide');
+  const totalSlides = slides.length;
+  let currentSlide = 0;
+
+  // Buat dots
+  saranaDots.innerHTML = '';
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+    dot.dataset.index = i;
+    dot.addEventListener('click', function() {
+      goToSaranaSlide(parseInt(this.dataset.index));
+    });
+    saranaDots.appendChild(dot);
+  }
+  const saranaDotsList = saranaDots.querySelectorAll('.slider-dot');
+
+  function goToSaranaSlide(index) {
+    if (index < 0) index = totalSlides - 1;
+    if (index >= totalSlides) index = 0;
+    currentSlide = index;
+    saranaSlider.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+    saranaDotsList.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  saranaPrev.addEventListener('click', function() {
+    goToSaranaSlide(currentSlide - 1);
+  });
+
+  saranaNext.addEventListener('click', function() {
+    goToSaranaSlide(currentSlide + 1);
+  });
+
+  // Auto-slide
+  let saranaAutoSlide;
+  function startSaranaAutoSlide() {
+    if (window.innerWidth < 768) {
+      if (saranaAutoSlide) clearInterval(saranaAutoSlide);
+      saranaAutoSlide = setInterval(function() {
+        goToSaranaSlide(currentSlide + 1);
+      }, 5000);
+    } else {
+      if (saranaAutoSlide) {
+        clearInterval(saranaAutoSlide);
+        saranaAutoSlide = null;
+      }
+    }
+  }
+  startSaranaAutoSlide();
+  window.addEventListener('resize', startSaranaAutoSlide);
+}
+
+// ===== UPDATE COUNTER SARANA =====
+function updateSaranaCounts() {
+  const mapping = {
+    'admin_tradisi_lisan': 'count_tradisi_lisan_sarana',
+    'admin_manuskrip': 'count_manuskrip_sarana',
+    'admin_adat_istiadat': 'count_adat_istiadat_sarana',
+    'admin_ritus': 'count_ritus_sarana',
+    'admin_pengetahuan_tradisional': 'count_pengetahuan_tradisional_sarana',
+    'admin_teknologi_tradisional': 'count_teknologi_tradisional_sarana',
+    'admin_seni': 'count_seni_sarana',
+    'admin_bahasa': 'count_bahasa_sarana',
+    'admin_permainan_rakyat': 'count_permainan_rakyat_sarana',
+    'admin_olahraga_tradisional': 'count_olahraga_tradisional_sarana',
+    'admin_cagar_budaya': 'count_cagar_budaya_sarana'
+  };
+
+  for (const [key, elementId] of Object.entries(mapping)) {
+    try {
+      const raw = localStorage.getItem(key);
+      const data = raw ? JSON.parse(raw) : [];
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.textContent = data.length;
+      }
+    } catch (e) {
+      console.warn('Gagal load data ' + key + ':', e);
+    }
+  }
+}
+
+// Panggil updateSaranaCounts di dalam updateAllCounts atau secara terpisah
+// Tambahkan ke dalam updateAllCounts yang sudah ada
+  </script>
+
+</body>
+</html>
